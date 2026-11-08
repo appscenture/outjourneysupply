@@ -1586,36 +1586,18 @@ img {
   overflow: hidden;
 }
 
-.meal-package-card-with-image {
-  isolation: isolate;
+.meal-package-card-solid {
+  background-color: #172b45;
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-.meal-package-card-with-image::after {
-  content: '';
-  position: absolute;
-  inset: -6px;
-  z-index: -1;
-  background-image:
-    linear-gradient(180deg, rgba(5, 12, 24, 0.88), rgba(5, 12, 24, 0.94)),
-    var(--meal-package-image);
-  background-position: center;
-  background-size: cover;
-  filter: blur(4px);
-}
-
-.meal-package-card-with-image > * {
-  position: relative;
-  z-index: 1;
-}
-
-.meal-package-card.meal-package-card-with-image > h4,
-.meal-package-card-with-image .meal-package-group h5 {
+.meal-package-card.meal-package-card-solid > h4,
+.meal-package-card-solid .meal-package-group h5 {
   color: #ffffff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
-.meal-package-card.meal-package-card-with-image > h4 {
+.meal-package-card.meal-package-card-solid > h4 {
   width: fit-content;
   padding: 7px 11px;
   border: 1px solid rgba(255, 255, 255, 0.24);
@@ -1624,18 +1606,18 @@ img {
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.28);
 }
 
-.meal-package-card-with-image .meal-package-group h5 {
+.meal-package-card-solid .meal-package-group h5 {
   width: fit-content;
   padding: 4px 8px;
   border-radius: 6px;
   background: rgba(3, 10, 22, 0.58);
 }
 
-.meal-package-card-with-image .meal-package-group {
+.meal-package-card-solid .meal-package-group {
   border-color: rgba(255, 255, 255, 0.24);
 }
 
-.meal-package-card-with-image .meal-package-group ul {
+.meal-package-card-solid .meal-package-group ul {
   color: #ffffff;
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.55);
 }
