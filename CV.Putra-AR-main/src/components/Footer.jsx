@@ -18,7 +18,7 @@ export const Footer = () => {
             </span>
           </div>
           <p>
-            Perusahaan manufaktur makanan olahan terpercaya yang berpusat di Ciamis, Jawa Barat. Memproduksi ragam bakso Raja Raoz, otak-otak ikan, kwetiau, dan camilan bermutu tinggi berstandar mesin modern Jepang.
+            Mitra food supply dan solusi bisnis lintas sektor yang mengutamakan keandalan, layanan yang konsisten, dan solusi sederhana yang bekerja setiap hari.
           </p>
         </div>
 
@@ -29,33 +29,34 @@ export const Footer = () => {
             <li><a href="#profile">Profil Perusahaan</a></li>
             <li><a href="#gallery">Galeri Produk</a></li>
             <li><a href="#standards">Standar Mutu &amp; Lab</a></li>
-            <li><a href="#products">Katalog Menu</a></li>
+            <li><a href="#products">Food Supply &amp; Katalog</a></li>
             <li><a href="#partnership">Kemitraan Grosir</a></li>
             <li><a href="#contact">Kontak &amp; Alamat</a></li>
           </ul>
         </div>
 
         <div className="footer-col">
-          <h4>Lini Manufaktur</h4>
+          <h4>Food Supply</h4>
           <ul className="footer-links">
-            <li><a href="#products">Bakso Sapi Super Raja Raoz</a></li>
-            <li><a href="#products">Otak-Otak Ikan Tenggiri Segar</a></li>
-            <li><a href="#products">Basreng Pedas Daun Jeruk</a></li>
-            <li><a href="#products">Kwetiau Segar Siap Olah</a></li>
-            <li><a href="#products">Cimol &amp; Camilan Tradisional</a></li>
+            <li><a href="#products">Buah &amp; Sayuran</a></li>
+            <li><a href="#products">Ayam, Daging, Ikan &amp; Seafood</a></li>
+            <li><a href="#products">Frozen &amp; Bahan Siap Masak</a></li>
+            <li><a href="#products">Paket Menu Harian</a></li>
           </ul>
         </div>
 
         <div className="footer-col">
-          <h4>Kantor &amp; Fasilitas Produksi</h4>
+          <h4>Kontak &amp; Kantor</h4>
           <p style={{ marginBottom: 10 }}>
-            Desa Sukahurip, Kecamatan Cihaurbeuti, Kabupaten Ciamis, Jawa Barat 46262
+            Tower 3 Pondok Indah Mall<br />
+            Jl. Sultan Iskandar Muda, Kav. V-TA, Pondok Indah<br />
+            Jakarta 12310
           </p>
           <p style={{ marginBottom: 6 }}>
-            Telepon: (0265) 5401232
+            <a href="tel:+6281388882473">+62 813-8888-2473</a>
           </p>
           <p>
-            WhatsApp Resmi: +62 813-1064-1534
+            <a href="https://www.outjourney.id">www.outjourney.id</a>
           </p>
         </div>
       </div>
@@ -65,7 +66,7 @@ export const Footer = () => {
           Hak Cipta &copy; {currentYear} Outjourney. Seluruh Hak Dilindungi Undang-Undang.
         </span>
         <span>
-          Manufaktur Pangan Olahan Berstandar Higienis Nasional
+          Food Supply &amp; Business Solutions
         </span>
       </div>
     </footer>

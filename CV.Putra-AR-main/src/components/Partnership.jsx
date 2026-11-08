@@ -5,40 +5,35 @@ import { Check, MessageCircle } from 'lucide-react';
 export const Partnership = () => {
   const tiers = [
     {
-      badge: 'Tier 1 - Mitra Toko',
-      title: 'Reseller Resmi',
-      minOrder: 'Min. Order: 50 Pack / Bulan',
+      badge: 'Food Supply',
+      title: 'Pasokan Harian',
+      minOrder: 'Untuk kebutuhan rumah tangga dan usaha',
       benefits: [
-        'Diskon harga grosir 15% dari eceran',
-        'Bebas mix varian produk Raja Raoz',
-        'Dukungan materi promosi digital',
-        'Jadwal kirim berkala terjamin',
+        'Buah dan sayuran',
+        'Ayam, daging, ikan, dan seafood',
+        'Konfirmasi ketersediaan produk',
       ],
       isFeatured: false,
     },
     {
-      badge: 'Tier 2 - Terpopuler',
-      title: 'Agen Wilayah',
-      minOrder: 'Min. Order: 250 Pack / Bulan',
+      badge: 'Business Supply',
+      title: 'Pengadaan Bisnis',
+      minOrder: 'Untuk kantor, usaha, dan kebutuhan rutin',
       benefits: [
-        'Diskon harga distributor 25%',
-        'Hak eksklusivitas tingkat kecamatan',
-        'Prioritas pengiriman armada berpendingin',
-        'Banner fisik & spanduk outlet resmi',
-        'Pelatihan standar handling frozen food',
+        'Pilihan produk frozen dan siap masak',
+        'Pembahasan kebutuhan dan jadwal pasokan',
+        'Penawaran berdasarkan daftar kebutuhan',
       ],
       isFeatured: true,
     },
     {
-      badge: 'Tier 3 - Skala Kota',
-      title: 'Distributor Utama',
-      minOrder: 'Min. Order: 1.000+ Pack / Bulan',
+      badge: 'Meal Supply',
+      title: 'Paket Menu',
+      minOrder: 'Pilihan paket mulai Rp23.000',
       benefits: [
-        'Harga pabrik langsung (Paling Kompetitif)',
-        'Eksklusivitas teritorial tingkat kota/kabupaten',
-        'Fasilitas tempo pembayaran berkala',
-        'Pengiriman langsung dari gudang pusat Ciamis',
-        'Dedicated account manager kemitraan',
+        'Pilihan menu breakfast, lunch, dan dinner',
+        'Pilihan paket Rp23.000, Rp25.000, Rp28.000, dan Rp30.000',
+        'Hubungi kami untuk pemesanan',
       ],
       isFeatured: false,
     },
@@ -46,9 +41,9 @@ export const Partnership = () => {
 
   const handleConsultation = (tierTitle) => {
     const text = encodeURIComponent(
-      `Halo Outjourney, saya berminat mengajukan kemitraan resmi untuk tingkatan [${tierTitle}]. Mohon informasi syarat dan katalog harga grosir pabrik.`
+      `Halo Outjourney, saya berminat membahas kerja sama Food Supply untuk [${tierTitle}]. Mohon informasi katalog dan penawaran.`
     );
-    window.open(`https://wa.me/6281310641534?text=${text}`, '_blank');
+    window.open(`https://wa.me/6281388882473?text=${text}`, '_blank');
   };
 
   return (
@@ -60,7 +55,7 @@ export const Partnership = () => {
             Program Kemitraan &amp; <em className="italic">Pasokan Grosir</em>
           </h2>
           <p>
-            Dapatkan margin usaha yang menguntungkan dengan memasarkan produk olahan pangan resmi Outjourney di wilayah Anda.
+            Hubungi tim kami untuk membahas kebutuhan pasokan pangan, pengadaan rutin, dan peluang kerja sama bisnis.
           </p>
         </div>
 

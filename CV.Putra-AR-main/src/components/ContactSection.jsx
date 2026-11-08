@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import { MapPin, Phone, Globe, Send } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 export const ContactSection = () => {
@@ -23,10 +23,10 @@ export const ContactSection = () => {
       <div className="standards-header">
         <span className="standards-eyebrow">Hubungi Perusahaan</span>
         <h2>
-          Layanan Pelanggan &amp; <em className="italic">Kunjungan Pabrik</em>
+          Hubungi Outjourney &amp; <em className="italic">Kantor Kami</em>
         </h2>
         <p>
-          Tim layanan resmi Outjourney siap menjawab pertanyaan mengenai produk, jadwal produksi, hingga peluang keagenan.
+          Hubungi tim Outjourney untuk kebutuhan food supply, paket menu, dan kerja sama bisnis.
         </p>
       </div>
 
@@ -43,9 +43,11 @@ export const ContactSection = () => {
               <MapPin />
             </div>
             <div>
-              <h4 style={{ fontWeight: 700, marginBottom: 4 }}>Alamat Fasilitas Produksi</h4>
+              <h4 style={{ fontWeight: 700, marginBottom: 4 }}>Kantor</h4>
               <p style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)' }}>
-                Desa Sukahurip, Kecamatan Cihaurbeuti, Kabupaten Ciamis, Jawa Barat 46262, Indonesia
+                Tower 3 Pondok Indah Mall<br />
+                Jl. Sultan Iskandar Muda, Kav. V-TA<br />
+                Pondok Indah, Jakarta 12310
               </p>
             </div>
           </div>
@@ -55,35 +57,23 @@ export const ContactSection = () => {
               <Phone />
             </div>
             <div>
-              <h4 style={{ fontWeight: 700, marginBottom: 4 }}>Telepon &amp; WhatsApp Resmi</h4>
+              <h4 style={{ fontWeight: 700, marginBottom: 4 }}>Telepon &amp; WhatsApp</h4>
               <p style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)' }}>
-                Hotline: (0265) 5401232<br />
-                WhatsApp: +62 813-1064-1534
+                <a href="tel:+6281388882473">+62 813-8888-2473</a>
               </p>
             </div>
           </div>
 
           <div className="contact-item-row">
             <div className="contact-icon-box">
-              <Clock />
+              <Globe />
             </div>
             <div>
-              <h4 style={{ fontWeight: 700, marginBottom: 4 }}>Jam Operasional Pelayanan</h4>
+              <h4 style={{ fontWeight: 700, marginBottom: 4 }}>Website</h4>
               <p style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)' }}>
-                Senin - Sabtu: 08.00 - 17.00 WIB<br />
-                Minggu &amp; Libur Nasional: Konfirmasi Terlebih Dahulu
-              </p>
-            </div>
-          </div>
-
-          <div className="contact-item-row" style={{ marginBottom: 0 }}>
-            <div className="contact-icon-box">
-              <Mail />
-            </div>
-            <div>
-              <h4 style={{ fontWeight: 700, marginBottom: 4 }}>Surat Elektronik Resmi</h4>
-              <p style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)' }}>
-                layanan@cvputra-ar.co.id
+                <a href="https://www.outjourney.id" target="_blank" rel="noreferrer">
+                  www.outjourney.id
+                </a>
               </p>
             </div>
           </div>

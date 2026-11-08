@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Clock, Phone, MessageCircle } from 'lucide-react';
+import { MapPin, Globe, Phone, MessageCircle } from 'lucide-react';
 
 export const TopBar = () => {
   return (
@@ -7,21 +7,21 @@ export const TopBar = () => {
       <div className="top-notice-left">
         <div className="top-notice-item">
           <MapPin />
-          <span>Pabrik: Sukahurip, Kabupaten Ciamis, Jawa Barat 46262</span>
+          <span>Tower 3 Pondok Indah Mall, Jakarta 12310</span>
         </div>
         <div className="top-notice-item">
-          <Clock />
-          <span>Senin - Sabtu: 08.00 - 17.00 WIB</span>
+          <Globe />
+          <a href="https://www.outjourney.id">www.outjourney.id</a>
         </div>
       </div>
       <div className="top-notice-right">
         <div className="top-notice-item">
           <Phone />
-          <span>(0265) 5401232</span>
+          <a href="tel:+6281388882473">+62 813-8888-2473</a>
         </div>
         <div className="top-notice-item">
           <MessageCircle />
-          <span>WA: +62 813-1064-1534</span>
+          <a href="https://wa.me/6281388882473">WhatsApp</a>
         </div>
       </div>
     </div>

@@ -94,7 +94,7 @@ export const CartProvider = ({ children }) => {
       'Terima kasih telah bermitra dengan Outjourney.',
     ];
 
-    const waNumber = '6281310641534';
+    const waNumber = '6281388882473';
     const encoded = encodeURIComponent(messageLines.join('\n'));
     window.open(`https://wa.me/${waNumber}?text=${encoded}`, '_blank');
   };

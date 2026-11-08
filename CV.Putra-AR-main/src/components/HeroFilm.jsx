@@ -34,11 +34,11 @@ export const HeroFilm = () => {
 
   // Automated Typewriter Headline Rotation
   const headlinePhrases = [
-    { prefix: 'Cita Rasa Otentik, Standar ', highlight: 'Modern' },
-    { prefix: 'Manufaktur Higienis Berteknologi ', highlight: 'Jepang' },
-    { prefix: 'Produksi Bakso Raja Raoz & ', highlight: 'Pangan Olahan' },
-    { prefix: 'Pasokan Berkualitas untuk ', highlight: 'Mitra Grosir' },
-    { prefix: 'Dedikasi Mutu Pangan Terbaik ', highlight: 'Nusantara' },
+    { prefix: 'Food Supply untuk Bisnis yang ', highlight: 'Bergerak' },
+    { prefix: 'Solusi Andal untuk Setiap ', highlight: 'Kebutuhan' },
+    { prefix: 'Mengubah Ide Menjadi ', highlight: 'Solusi' },
+    { prefix: 'Mendorong Bisnis dan Industri ', highlight: 'Maju' },
+    { prefix: 'Membangun Hal Berikutnya, di ', highlight: 'Setiap Industri' },
   ];
 
   const [phraseIdx, setPhraseIdx] = useState(0);
@@ -139,7 +139,7 @@ export const HeroFilm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Manufaktur Pangan Resmi • Berdiri Sejak 2017
+          Food Supply &amp; Business Solutions
         </motion.span>
 
         <h1 className="film-main-headline">
@@ -154,8 +154,8 @@ export const HeroFilm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Produsen bakso Raja Raoz, otak-otak, kwetiau, dan camilan olahan bermutu tinggi.
-          Didukung otomasi mesin berstandar Jepang untuk pasokan grosir terpercaya di seluruh Pulau Jawa.
+          Menyediakan produk pangan, kebutuhan esensial, perlengkapan kantor, dan layanan pendukung.
+          Kami membantu bisnis berjalan lebih lancar melalui solusi yang andal dan layanan yang konsisten.
         </motion.p>
 
         <motion.div
