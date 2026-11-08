@@ -50,9 +50,9 @@ export const Partnership = () => {
     <section className="section-partnership" id="partnership">
       <div className="partnership-container">
         <div className="partnership-header">
-          <span className="standards-eyebrow">Peluang Kerjasama B2B</span>
+          <span className="standards-eyebrow">Peluang Kerja Sama</span>
           <h2>
-            Program Kemitraan &amp; <em className="italic">Pasokan Grosir</em>
+            Program Kemitraan &amp; <em className="italic">Food Supply</em>
           </h2>
           <p>
             Hubungi tim kami untuk membahas kebutuhan pasokan pangan, pengadaan rutin, dan peluang kerja sama bisnis.

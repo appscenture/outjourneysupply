@@ -117,7 +117,7 @@ export const ContactSection = () => {
                 type="text"
                 id="c-subject"
                 required
-                placeholder="Pemesanan grosir, keagenan, katering..."
+                placeholder="Kebutuhan pasokan, paket menu, kerja sama..."
                 value={formData.subject}
                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
               />

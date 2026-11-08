@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { ArrowUpRight, Search } from 'lucide-react';
 import { formatRupiah } from '../data/products';
 import { foodSupplyCategories, foodSupplyWhatsApp, mealPackages } from '../data/foodSupply';

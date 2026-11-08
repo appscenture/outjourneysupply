@@ -30,7 +30,7 @@ export const Footer = () => {
             <li><a href="#gallery">Galeri Produk</a></li>
             <li><a href="#standards">Standar Mutu &amp; Lab</a></li>
             <li><a href="#products">Food Supply &amp; Katalog</a></li>
-            <li><a href="#partnership">Kemitraan Grosir</a></li>
+            <li><a href="#partnership">Kemitraan Food Supply</a></li>
             <li><a href="#contact">Kontak &amp; Alamat</a></li>
           </ul>
         </div>

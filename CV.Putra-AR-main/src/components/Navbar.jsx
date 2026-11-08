@@ -65,7 +65,7 @@ export const Navbar = ({ onSearchClick }) => {
         </button>
 
         <a href="#partnership" className="btn-nav-cta">
-          <Briefcase /> Grosir
+          <Briefcase /> Food Supply
         </a>
 
         <button

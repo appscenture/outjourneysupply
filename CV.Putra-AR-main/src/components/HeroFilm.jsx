@@ -168,7 +168,7 @@ export const HeroFilm = () => {
             <ShoppingBag size={18} /> Katalog Produk
           </a>
           <a href="#partnership" className="btn-solid-secondary">
-            <Users size={18} /> Kemitraan Grosir
+            <Users size={18} /> Food Supply
           </a>
         </motion.div>
       </div>
