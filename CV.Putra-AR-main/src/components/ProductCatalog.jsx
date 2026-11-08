@@ -3,28 +3,24 @@ import { ArrowUpRight, Search } from 'lucide-react';
 import { formatRupiah } from '../data/products';
 import { foodSupplyCategories, foodSupplyWhatsApp, mealPackages } from '../data/foodSupply';
 
+const foodSupplyItems = foodSupplyCategories.flatMap((category) =>
+  category.items.map((item) => ({ category: category.name, item }))
+);
+
 export const ProductCatalog = () => {
   const [activeSupplyCategory, setActiveSupplyCategory] = useState('Semua');
   const [supplySearchQuery, setSupplySearchQuery] = useState('');
 
-  const filteredSupplyCategories = foodSupplyCategories
-    .filter((category) => activeSupplyCategory === 'Semua' || category.name === activeSupplyCategory)
-    .map((category) => ({
-      ...category,
-      items: category.items.filter((item) =>
-        item.toLowerCase().includes(supplySearchQuery.toLowerCase())
-      ),
-    }))
-    .filter((category) => category.items.length > 0);
+  const filteredSupplyItems = foodSupplyItems.filter(({ category, item }) => {
+    const matchesCategory = activeSupplyCategory === 'Semua' || category === activeSupplyCategory;
+    const searchText = `${category} ${item}`.toLowerCase();
+    return matchesCategory && searchText.includes(supplySearchQuery.trim().toLowerCase());
+  });
 
   const getInquiryUrl = (item) => {
     const message = `Halo Outjourney, saya ingin menanyakan harga dan ketersediaan ${item}.`;
     return `https://wa.me/${foodSupplyWhatsApp}?text=${encodeURIComponent(message)}`;
   };
-  const supplyItemCount = filteredSupplyCategories.reduce(
-    (total, category) => total + category.items.length,
-    0
-  );
 
   return (
     <section className="section-products" id="products">
@@ -94,63 +90,74 @@ export const ProductCatalog = () => {
             <span className="catalog-section-kicker">Untuk dapur dan bisnis kuliner</span>
             <h3>Katalog Food Supply</h3>
           </div>
-          <span className="catalog-result-count">{supplyItemCount} item tersedia</span>
+          <span className="catalog-result-count">
+            {filteredSupplyItems.length} dari {foodSupplyItems.length} item
+          </span>
         </div>
 
-        <div className="products-toolbar supply-toolbar">
-          <div className="category-tabs" aria-label="Kategori food supply">
-            {['Semua', ...foodSupplyCategories.map((category) => category.name)].map((category) => (
-              <button
-                key={category}
-                type="button"
-                className={`category-tab-btn ${activeSupplyCategory === category ? 'active' : ''}`}
-                onClick={() => setActiveSupplyCategory(category)}
-              >
-                <span>{category}</span>
-                <span className="category-tab-count">
-                  {category === 'Semua'
-                    ? foodSupplyCategories.reduce((total, entry) => total + entry.items.length, 0)
-                    : foodSupplyCategories.find((entry) => entry.name === category).items.length}
-                </span>
-              </button>
-            ))}
-          </div>
-          <label className="search-input-wrapper">
+        <div className="supply-table-toolbar">
+          <label className="supply-search">
             <Search />
             <input
               type="text"
-              placeholder="Cari bahan pangan..."
+              placeholder="Cari item atau kategori..."
               value={supplySearchQuery}
               onChange={(event) => setSupplySearchQuery(event.target.value)}
-              aria-label="Cari bahan pangan"
+              aria-label="Cari item atau kategori food supply"
             />
+          </label>
+          <label className="supply-category-filter">
+            <span>Filter kategori</span>
+            <select
+              value={activeSupplyCategory}
+              onChange={(event) => setActiveSupplyCategory(event.target.value)}
+              aria-label="Filter kategori food supply"
+            >
+              <option value="Semua">Semua kategori</option>
+              {foodSupplyCategories.map((category) => (
+                <option key={category.name} value={category.name}>{category.name}</option>
+              ))}
+            </select>
           </label>
         </div>
 
-        <div className="food-supply-grid">
-          {filteredSupplyCategories.map((category) => (
-            <article className="food-supply-card" key={category.name}>
-              <h4>{category.name}</h4>
-              <ul>
-                {category.items.map((item) => (
-                  <li key={item}>
-                    <span>{item}</span>
+        <div className="food-supply-table-wrap">
+          <table className="food-supply-table">
+            <thead>
+              <tr>
+                <th scope="col" className="supply-row-number-heading">#</th>
+                <th scope="col">Item</th>
+                <th scope="col">Kategori</th>
+                <th scope="col" className="supply-action-heading">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredSupplyItems.map(({ category, item }, index) => (
+                <tr key={`${category}-${item}`}>
+                  <td className="supply-row-number">{index + 1}</td>
+                  <td className="supply-item-name">{item}</td>
+                  <td><span className="supply-category-tag">{category}</span></td>
+                  <td className="supply-action-cell">
                     <a
                       href={getInquiryUrl(item)}
                       target="_blank"
                       rel="noreferrer"
                       aria-label={`Tanyakan harga dan ketersediaan ${item}`}
                     >
-                      Tanya harga <ArrowUpRight size={13} />
+                      Tanya harga <ArrowUpRight size={14} />
                     </a>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
-          {!filteredSupplyCategories.length && (
-            <p className="food-supply-empty">Tidak ada bahan pangan yang cocok dengan pencarian.</p>
-          )}
+                  </td>
+                </tr>
+              ))}
+              {!filteredSupplyItems.length && (
+                <tr>
+                  <td className="food-supply-empty" colSpan="4">
+                    Tidak ada item yang cocok dengan pencarian atau filter.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>

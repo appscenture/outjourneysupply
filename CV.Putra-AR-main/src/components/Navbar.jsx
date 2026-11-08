@@ -21,7 +21,7 @@ export const Navbar = ({ onSearchClick }) => {
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <a href="#home" className="navbar-brand">
         <img
-          src="img/imgcvputra/logoatas.webp"
+          src="https://ik.imagekit.io/p9bj7nsf9/1.png"
           alt="Outjourney Logo"
           className="brand-logo"
         />

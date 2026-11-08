@@ -1570,8 +1570,7 @@ img {
   gap: 16px;
 }
 
-.meal-package-card,
-.food-supply-card {
+.meal-package-card {
   padding: 20px;
   background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,1) 100%);
   border: 1px solid rgba(148, 163, 184, 0.22);
@@ -1587,8 +1586,7 @@ img {
   overflow: hidden;
 }
 
-.meal-package-card::before,
-.food-supply-card::before {
+.meal-package-card::before {
   content: '';
   position: absolute;
   inset: 0 auto auto 0;
@@ -1598,8 +1596,7 @@ img {
   opacity: 0.9;
 }
 
-.meal-package-card:hover,
-.food-supply-card:hover {
+.meal-package-card:hover {
   transform: translateY(-4px);
   border-color: rgba(59, 130, 246, 0.28);
   box-shadow: 0 22px 36px rgba(15, 23, 42, 0.1);
@@ -1671,77 +1668,156 @@ img {
   box-shadow: 0 12px 22px rgba(37, 99, 235, 0.26);
 }
 
-.supply-toolbar {
-  margin-bottom: 24px;
+.supply-table-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
-.food-supply-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  gap: 16px;
-}
-
-.food-supply-card {
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+.supply-search {
   position: relative;
-  overflow: hidden;
+  flex: 1 1 360px;
+  max-width: 520px;
 }
 
-.food-supply-card h4 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+.supply-search svg {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-light);
+  transform: translateY(-50%);
+}
+
+.supply-search input,
+.supply-category-filter select {
+  min-height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg-white);
   color: var(--color-text-main);
-  font-size: 1.05rem;
-  font-weight: 800;
+  font: inherit;
+  font-size: 0.84rem;
 }
 
-.food-supply-card ul {
-  list-style: none;
+.supply-search input {
+  width: 100%;
+  padding: 9px 12px 9px 38px;
 }
 
-.food-supply-card li {
+.supply-search input:focus,
+.supply-category-filter select:focus {
+  border-color: var(--color-primary);
+  outline: 2px solid rgba(29, 78, 216, 0.16);
+  outline-offset: 1px;
+}
+
+.supply-category-filter {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  padding: 10px 0;
-  border-top: 1px solid rgba(148, 163, 184, 0.18);
+  gap: 8px;
   color: var(--color-text-muted);
   font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.supply-category-filter select {
+  min-width: 190px;
+  padding: 8px 32px 8px 10px;
+}
+
+.food-supply-table-wrap {
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg-white);
+}
+
+.food-supply-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.food-supply-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--color-border);
+  background: #f8fafc;
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.food-supply-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eef1f5;
+  color: var(--color-text-main);
+  font-size: 0.82rem;
   line-height: 1.5;
 }
 
-.food-supply-card li a {
+.food-supply-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.food-supply-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.food-supply-table .supply-row-number-heading,
+.food-supply-table .supply-row-number {
+  width: 52px;
+  color: var(--color-text-light);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.supply-item-name {
+  min-width: 280px;
+}
+
+.supply-category-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.74rem;
+  white-space: nowrap;
+}
+
+.food-supply-table .supply-action-heading,
+.food-supply-table .supply-action-cell {
+  width: 130px;
+  text-align: right;
+}
+
+.supply-action-cell a {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  flex: 0 0 auto;
-  padding: 6px 8px;
-  border-radius: var(--radius-full);
-  background: rgba(29, 78, 216, 0.08);
+  justify-content: flex-end;
+  gap: 4px;
   color: var(--color-primary);
-  font-size: 0.68rem;
-  font-weight: 800;
-  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.food-supply-card li a:hover {
-  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-  color: #ffffff;
-  transform: translateY(-1px);
+.supply-action-cell a:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.supply-toolbar {
-  align-items: flex-start;
-  margin-bottom: 20px;
-}
-
-.food-supply-empty {
-  grid-column: 1 / -1;
-  padding: 24px;
+.food-supply-table .food-supply-empty {
+  padding: 28px 14px;
   color: var(--color-text-muted);
   text-align: center;
 }
@@ -1848,9 +1924,26 @@ img {
     height: 16px;
   }
 
-  .meal-package-grid,
-  .food-supply-grid {
+  .meal-package-grid {
     grid-template-columns: 1fr;
+  }
+
+  .supply-table-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .supply-search {
+    max-width: none;
+  }
+
+  .supply-category-filter {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .supply-category-filter select {
+    width: 100%;
   }
 
   .food-supply-heading {
@@ -2446,4 +2539,397 @@ img {
   .footer-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ==========================================================================
+   Responsive layout refinements
+   ========================================================================== */
+.supply-category-filter {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.supply-category-filter select {
+  appearance: none;
+  min-width: 210px;
+  min-height: 46px;
+  padding: 10px 42px 10px 14px;
+  border: 1px solid #d5deeb;
+  border-radius: 12px;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  font: inherit;
+  font-size: 0.86rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.supply-category-filter select:hover {
+  border-color: #a9bad4;
+}
+
+.supply-category-filter:focus-within select {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.12);
+}
+
+@media (max-width: 768px) {
+  .section-profile,
+  .section-cuisine-gallery,
+  .section-standards,
+  .section-partnership,
+  .section-contact {
+    padding: 72px 5%;
+  }
+
+  .film-hero {
+    min-height: 78svh;
+    padding: 78px 5% 88px;
+  }
+
+  .film-main-headline {
+    display: block;
+    min-height: 0;
+    max-width: 100%;
+    overflow: visible;
+    white-space: normal;
+    text-overflow: clip;
+    font-size: clamp(1.45rem, 6vw, 2.25rem);
+    line-height: 1.3;
+  }
+
+  .film-main-headline span,
+  .film-main-headline em {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .film-lead-text {
+    font-size: 1rem;
+    line-height: 1.65;
+    margin-bottom: 26px;
+  }
+
+  .profile-container {
+    gap: 32px;
+  }
+
+  .profile-heading,
+  .gallery-header-left h2,
+  .standards-header h2 {
+    font-size: clamp(1.85rem, 5vw, 2.3rem);
+  }
+
+  .gallery-header-row {
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  .gallery-header-right {
+    margin-top: 12px;
+  }
+
+  .gallery-header-right p {
+    max-width: none;
+  }
+
+  .standards-header {
+    margin-bottom: 32px;
+  }
+
+  .partnership-tiers-grid {
+    gap: 18px;
+    margin-bottom: 32px;
+  }
+
+  .contact-layout {
+    gap: 24px;
+  }
+
+  .contact-info-card,
+  .contact-form-card {
+    padding: 26px;
+  }
+
+  .shopping-cart-drawer {
+    width: min(440px, 100vw);
+    height: 100dvh;
+  }
+
+  .cart-footer {
+    max-height: 58dvh;
+    overflow-y: auto;
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+
+  .product-modal-card {
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+  }
+
+  .modal-img-box {
+    height: clamp(150px, 34vh, 240px);
+    min-height: 0;
+  }
+
+  .modal-content-box {
+    padding: 22px;
+  }
+
+  .site-toast {
+    right: 16px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    left: 16px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    height: 64px;
+    padding: 0 5%;
+  }
+
+  .navbar-nav {
+    top: 64px;
+    width: min(320px, 86vw);
+    height: calc(100dvh - 64px);
+    overflow-y: auto;
+    padding: 22px;
+  }
+
+  .navbar-actions {
+    gap: 8px;
+  }
+
+  .btn-nav-cta {
+    display: none;
+  }
+
+  .action-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand-name {
+    font-size: 1.05rem;
+  }
+
+  .film-hero {
+    min-height: 74svh;
+    padding: 76px 5% 82px;
+  }
+
+  .film-pre-badge {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 16px;
+  }
+
+  .film-main-headline {
+    font-size: clamp(1.35rem, 7vw, 1.9rem);
+    margin-bottom: 16px;
+  }
+
+  .film-cta-row {
+    gap: 10px;
+  }
+
+  .film-cta-row > a {
+    justify-content: center;
+    flex: 1 1 145px;
+    padding: 12px 14px;
+    font-size: 0.85rem;
+  }
+
+  .profile-heading,
+  .gallery-header-left h2,
+  .standards-header h2 {
+    font-size: clamp(1.7rem, 7vw, 2rem);
+  }
+
+  .profile-stats-row {
+    gap: 12px;
+  }
+
+  .profile-stat-box h3 {
+    font-size: clamp(1.45rem, 6vw, 1.8rem);
+  }
+
+  .profile-stat-box p {
+    font-size: 0.76rem;
+  }
+
+  .profile-dna-intro {
+    padding: 22px;
+  }
+
+  .cuisine-mosaic-grid,
+  .standards-framed-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .cuisine-img-container {
+    height: 150px;
+  }
+
+  .cuisine-body,
+  .standard-card-body {
+    padding: 14px;
+  }
+
+  .cuisine-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-cuisine-add {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .standard-card-img {
+    height: 145px;
+  }
+
+  .section-products {
+    padding: 56px 5%;
+  }
+
+  .catalog-intro {
+    padding: 28px 22px;
+    border-radius: 20px;
+  }
+
+  .catalog-intro h2 {
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
+  }
+
+  .catalog-section-heading,
+  .food-supply-heading {
+    align-items: flex-start;
+  }
+
+  .meal-package-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .supply-table-toolbar {
+    align-items: stretch;
+  }
+
+  .supply-category-filter,
+  .supply-category-filter select {
+    width: 100%;
+  }
+
+  .food-supply-table {
+    min-width: 600px;
+  }
+
+  .tier-card {
+    padding: 26px 22px;
+  }
+
+  .contact-info-card,
+  .contact-form-card {
+    padding: 22px;
+  }
+
+  .footer-corporate {
+    padding: 52px 5% 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .top-notice-bar {
+    padding-right: 4%;
+    padding-left: 4%;
+    font-size: 0.7rem;
+  }
+
+  .navbar {
+    padding-right: 4%;
+    padding-left: 4%;
+  }
+
+  .navbar-actions {
+    gap: 6px;
+  }
+
+  .action-btn {
+    width: 34px;
+    height: 36px;
+  }
+
+  .navbar-brand {
+    gap: 8px;
+  }
+
+  .brand-logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brand-name {
+    font-size: 0.98rem;
+  }
+
+  .cuisine-mosaic-grid,
+  .standards-framed-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-stats-row {
+    gap: 8px;
+  }
+
+  .catalog-grid {
+    gap: 8px;
+  }
+
+  .catalog-content {
+    padding: 10px;
+  }
+
+  .catalog-price-row {
+    flex-wrap: wrap;
+  }
+
+  .modal-backdrop {
+    padding: 12px;
+  }
+
+  .modal-content-box {
+    padding: 18px;
+  }
+}
+
+.brand-principle-card,
+.profile-img-card,
+.profile-quote-card,
+.cuisine-item-card,
+.standard-card,
+.catalog-card,
+.meal-package-card,
+.tier-card,
+.tier-card.featured,
+.contact-info-card,
+.contact-form-card,
+.product-modal-card {
+  border: none;
 }

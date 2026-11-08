@@ -9,7 +9,7 @@ export const Footer = () => {
         <div className="footer-col">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
             <img
-              src="img/imgcvputra/logoatas.webp"
+              src="https://ik.imagekit.io/p9bj7nsf9/1.png"
               alt="Outjourney Logo"
               style={{ width: 36, height: 36, objectFit: 'contain' }}
             />
