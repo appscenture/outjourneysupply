@@ -1586,32 +1586,65 @@ img {
   overflow: hidden;
 }
 
-.meal-package-card-featured {
-  background-image:
-    linear-gradient(180deg, rgba(10, 18, 32, 0.72), rgba(10, 18, 32, 0.88)),
-    url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1000&q=85');
-  background-position: center;
-  background-size: cover;
+.meal-package-card-with-image {
+  isolation: isolate;
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-.meal-package-card-featured > h4,
-.meal-package-card-featured .meal-package-group h5 {
-  color: #ffffff;
+.meal-package-card-with-image::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  z-index: -1;
+  background-image:
+    linear-gradient(180deg, rgba(5, 12, 24, 0.88), rgba(5, 12, 24, 0.94)),
+    var(--meal-package-image);
+  background-position: center;
+  background-size: cover;
+  filter: blur(4px);
 }
 
-.meal-package-card-featured .meal-package-group {
+.meal-package-card-with-image > * {
+  position: relative;
+  z-index: 1;
+}
+
+.meal-package-card.meal-package-card-with-image > h4,
+.meal-package-card-with-image .meal-package-group h5 {
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.meal-package-card.meal-package-card-with-image > h4 {
+  width: fit-content;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 10px;
+  background: rgba(3, 10, 22, 0.82);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.28);
+}
+
+.meal-package-card-with-image .meal-package-group h5 {
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(3, 10, 22, 0.58);
+}
+
+.meal-package-card-with-image .meal-package-group {
   border-color: rgba(255, 255, 255, 0.24);
 }
 
-.meal-package-card-featured .meal-package-group ul {
-  color: rgba(255, 255, 255, 0.88);
+.meal-package-card-with-image .meal-package-group ul {
+  color: #ffffff;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.55);
 }
 
 .meal-package-card::before {
   content: '';
   position: absolute;
   inset: 0 auto auto 0;
+  z-index: 2;
   width: 100%;
   height: 4px;
   background: linear-gradient(90deg, rgba(29,78,216,0.9), rgba(56,189,248,0.8));
@@ -1667,6 +1700,10 @@ img {
   color: var(--color-text-muted);
   font-size: 0.8rem;
   line-height: 1.65;
+}
+
+.meal-package-group:last-of-type {
+  margin-bottom: 16px;
 }
 
 .meal-package-cta {
@@ -3445,7 +3482,7 @@ img {
   .meal-package-card,
   .meal-package-card:hover {
     border: 0;
-    background: transparent;
+    background-color: transparent;
     box-shadow: none;
   }
 

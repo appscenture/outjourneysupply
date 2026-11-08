@@ -6,6 +6,13 @@ const foodSupplyItems = foodSupplyCategories.flatMap((category) =>
   category.items.map((item) => ({ category: category.name, item }))
 );
 
+const mealPackageImages = {
+  'meal-23k': 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1000&q=85',
+  'meal-25k': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=85',
+  'meal-28k': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1000&q=85',
+  'meal-30k': 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1000&q=85',
+};
+
 export const ProductCatalog = () => {
   const [activeSupplyCategory, setActiveSupplyCategory] = useState('Semua');
   const [supplySearchQuery, setSupplySearchQuery] = useState('');
@@ -54,7 +61,10 @@ export const ProductCatalog = () => {
 
             return (
             <article
-              className={`meal-package-card${meal.id === 'meal-23k' ? ' meal-package-card-featured' : ''}`}
+              className="meal-package-card meal-package-card-with-image"
+              style={{
+                '--meal-package-image': `url("${mealPackageImages[meal.id]}")`,
+              }}
               key={meal.id}
             >
               <h4>{meal.title}</h4>
