@@ -1586,6 +1586,28 @@ img {
   overflow: hidden;
 }
 
+.meal-package-card-featured {
+  background-image:
+    linear-gradient(180deg, rgba(10, 18, 32, 0.72), rgba(10, 18, 32, 0.88)),
+    url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1000&q=85');
+  background-position: center;
+  background-size: cover;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.meal-package-card-featured > h4,
+.meal-package-card-featured .meal-package-group h5 {
+  color: #ffffff;
+}
+
+.meal-package-card-featured .meal-package-group {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.meal-package-card-featured .meal-package-group ul {
+  color: rgba(255, 255, 255, 0.88);
+}
+
 .meal-package-card::before {
   content: '';
   position: absolute;

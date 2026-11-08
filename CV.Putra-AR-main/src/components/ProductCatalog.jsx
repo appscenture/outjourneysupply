@@ -53,7 +53,10 @@ export const ProductCatalog = () => {
             const message = `Halo Outjourney, saya ingin memesan informasi untuk ${meal.title} (Rp${meal.price.toLocaleString('id-ID')}):\n${menuDetails}`;
 
             return (
-            <article className="meal-package-card" key={meal.id}>
+            <article
+              className={`meal-package-card${meal.id === 'meal-23k' ? ' meal-package-card-featured' : ''}`}
+              key={meal.id}
+            >
               <h4>{meal.title}</h4>
                 {meal.groups.map((group) => (
                   <div className="meal-package-group" key={group.title}>
