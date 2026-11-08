@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CartProvider, useCart } from './context/CartContext';
 import { TopBar } from './components/TopBar';
 import { Navbar } from './components/Navbar';
@@ -10,11 +10,9 @@ import { ProductCatalog } from './components/ProductCatalog';
 import { Partnership } from './components/Partnership';
 import { ContactSection } from './components/ContactSection';
 import { CartDrawer } from './components/CartDrawer';
-import { ProductModal } from './components/ProductModal';
 import { Footer } from './components/Footer';
 
 const AppContent = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const { toastVisible, toastMessage } = useCart();
 
   const handleSearchFocus = () => {
@@ -37,18 +35,13 @@ const AppContent = () => {
         <CompanyProfile />
         <CuisineGallery />
         <StandardsLab />
-        <ProductCatalog onSelectProduct={(prod) => setSelectedProduct(prod)} />
+        <ProductCatalog />
         <Partnership />
         <ContactSection />
       </main>
       <Footer />
 
       <CartDrawer />
-      <ProductModal
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-      />
-
       {toastVisible && (
         <div className="site-toast">
           {toastMessage}

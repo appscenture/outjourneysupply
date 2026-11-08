@@ -1,32 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Search, Plus } from 'lucide-react';
-import { productsData, formatRupiah } from '../data/products';
+import { ArrowUpRight, Search } from 'lucide-react';
+import { formatRupiah } from '../data/products';
 import { foodSupplyCategories, foodSupplyWhatsApp, mealPackages } from '../data/foodSupply';
-import { useCart } from '../context/CartContext';
 
-export const ProductCatalog = ({ onSelectProduct }) => {
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
+export const ProductCatalog = () => {
   const [activeSupplyCategory, setActiveSupplyCategory] = useState('Semua');
   const [supplySearchQuery, setSupplySearchQuery] = useState('');
-  const { addItem } = useCart();
-
-  const categories = [
-    { key: 'all', label: 'Semua Produk' },
-    { key: 'bakso', label: 'Bakso Sapi' },
-    { key: 'otakotak', label: 'Otak-Otak' },
-    { key: 'snack', label: 'Snack & Camilan' },
-    { key: 'kwetiau', label: 'Kwetiau' },
-  ];
-
-  const filteredProducts = productsData.filter((item) => {
-    const matchesCat = activeCategory === 'all' || item.category === activeCategory;
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.desc.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCat && matchesSearch;
-  });
 
   const filteredSupplyCategories = foodSupplyCategories
     .filter((category) => activeSupplyCategory === 'Semua' || category.name === activeSupplyCategory)
@@ -42,7 +22,6 @@ export const ProductCatalog = ({ onSelectProduct }) => {
     const message = `Halo Outjourney, saya ingin menanyakan harga dan ketersediaan ${item}.`;
     return `https://wa.me/${foodSupplyWhatsApp}?text=${encodeURIComponent(message)}`;
   };
-  const productCount = filteredProducts.length;
   const supplyItemCount = filteredSupplyCategories.reduce(
     (total, category) => total + category.items.length,
     0
@@ -61,97 +40,6 @@ export const ProductCatalog = ({ onSelectProduct }) => {
           <span>Harga transparan</span>
           <span>Pesan langsung via WhatsApp</span>
         </div>
-      </div>
-
-      <div className="catalog-section-heading">
-        <div>
-          <span className="catalog-section-kicker">Produk siap dipesan</span>
-          <h3>Produk olahan kemasan</h3>
-        </div>
-        <span className="catalog-result-count">{productCount} produk</span>
-      </div>
-      <div className="products-toolbar">
-        <div className="category-tabs" aria-label="Kategori produk olahan">
-          {categories.map((cat) => (
-            <button
-              key={cat.key}
-              type="button"
-              className={`category-tab-btn ${activeCategory === cat.key ? 'active' : ''}`}
-              onClick={() => setActiveCategory(cat.key)}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-
-        <label className="search-input-wrapper">
-          <Search />
-          <input
-            type="text"
-            placeholder="Cari produk olahan..."
-            aria-label="Cari produk olahan"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </label>
-      </div>
-
-      <div className="catalog-grid">
-        {filteredProducts.map((prod, idx) => (
-          <motion.div
-            key={prod.id}
-            className="catalog-card"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.5, delay: idx * 0.08 }}
-          >
-            <button
-              type="button"
-              className="catalog-img-box"
-              onClick={() => onSelectProduct && onSelectProduct(prod)}
-              aria-label={`Lihat detail ${prod.name}`}
-            >
-              <img src={prod.img} alt={prod.name} loading="lazy" />
-              {prod.isBestSeller && (
-                <span className="catalog-badge">Favorit pelanggan</span>
-              )}
-              <span className="catalog-image-action">
-                Lihat detail <ArrowUpRight size={14} />
-              </span>
-            </button>
-
-            <div className="catalog-content">
-              <div className="catalog-product-category">{prod.categoryLabel}</div>
-              <button
-                type="button"
-                className="catalog-title"
-                onClick={() => onSelectProduct && onSelectProduct(prod)}
-              >
-                {prod.name}
-              </button>
-              <p className="catalog-description">{prod.desc}</p>
-
-              <div className="catalog-unit">{prod.unit}</div>
-              <div className="catalog-price-row">
-                <div>
-                  <span className="catalog-price-label">Harga produk</span>
-                  <strong className="catalog-price">{formatRupiah(prod.price)}</strong>
-                </div>
-                <button
-                  type="button"
-                  className="btn-add-cart"
-                  onClick={() => addItem(prod)}
-                >
-                  <Plus size={15} /> Tambah
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-        {!productCount && (
-          <p className="food-supply-empty">Tidak ada produk olahan yang cocok dengan pencarian.</p>
-        )}
       </div>
 
       <div className="food-supply-section">
