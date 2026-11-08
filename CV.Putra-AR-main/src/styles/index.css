@@ -1820,6 +1820,8 @@ img {
   }
 
   .supply-search {
+    flex: 0 1 auto;
+    width: 100%;
     max-width: none;
   }
 
