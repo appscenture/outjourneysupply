@@ -1621,7 +1621,7 @@ img {
 }
 
 .meal-package-card > h4 {
-  margin: 12px 0 18px;
+  margin: 0 0 18px;
   color: var(--color-text-main);
   font-size: 1.2rem;
   font-weight: 800;

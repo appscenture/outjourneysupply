@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ArrowUpRight, Search } from 'lucide-react';
-import { formatRupiah } from '../data/products';
 import { foodSupplyCategories, foodSupplyWhatsApp, mealPackages } from '../data/foodSupply';
 
 const foodSupplyItems = foodSupplyCategories.flatMap((category) =>
@@ -54,12 +53,8 @@ export const ProductCatalog = () => {
             const message = `Halo Outjourney, saya ingin memesan informasi untuk ${meal.title} (Rp${meal.price.toLocaleString('id-ID')}):\n${menuDetails}`;
 
             return (
-              <article className="meal-package-card" key={meal.id}>
-                <div className="meal-package-topline">
-                  <span>Paket Menu</span>
-                  <strong>{formatRupiah(meal.price)}</strong>
-                </div>
-                <h4>{meal.title}</h4>
+            <article className="meal-package-card" key={meal.id}>
+              <h4>{meal.title}</h4>
                 {meal.groups.map((group) => (
                   <div className="meal-package-group" key={group.title}>
                     <h5>{group.title}</h5>
