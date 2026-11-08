@@ -4,7 +4,6 @@ import { TopBar } from './components/TopBar';
 import { Navbar } from './components/Navbar';
 import { HeroFilm } from './components/HeroFilm';
 import { CompanyProfile } from './components/CompanyProfile';
-import { CuisineGallery } from './components/CuisineGallery';
 import { StandardsLab } from './components/StandardsLab';
 import { ProductCatalog } from './components/ProductCatalog';
 import { Partnership } from './components/Partnership';
@@ -33,7 +32,6 @@ const AppContent = () => {
       <main>
         <HeroFilm />
         <CompanyProfile />
-        <CuisineGallery />
         <StandardsLab />
         <ProductCatalog />
         <Partnership />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Users } from 'lucide-react';
+import { Download, Users } from 'lucide-react';
 import { filmSlides } from '../data/slides';
 
 export const HeroFilm = () => {
@@ -164,8 +164,12 @@ export const HeroFilm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <a href="#products" className="btn-solid-primary">
-            <ShoppingBag size={18} /> Katalog Produk
+          <a
+            href="https://ik.imagekit.io/p9bj7nsf9/Company%20Profile%20Outjourney%202026%20Industry%20(1).pdf?ik-attachment=true"
+            className="btn-solid-primary"
+            download="Company-Profile-Outjourney-2026.pdf"
+          >
+            <Download size={18} /> Company Profile
           </a>
           <a href="#partnership" className="btn-solid-secondary">
             <Users size={18} /> Food Supply

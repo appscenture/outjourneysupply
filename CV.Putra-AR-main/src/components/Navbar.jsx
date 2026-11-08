@@ -33,9 +33,8 @@ export const Navbar = ({ onSearchClick }) => {
       <div className={`navbar-nav ${isMobileOpen ? 'open' : ''}`}>
         <a href="#home" onClick={closeMobile}>Beranda</a>
         <a href="#profile" onClick={closeMobile}>Profil</a>
-        <a href="#gallery" onClick={closeMobile}>Galeri</a>
         <a href="#standards" onClick={closeMobile}>Standar</a>
-        <a href="#products" onClick={closeMobile}>Menu</a>
+        <a href="#products" onClick={closeMobile}>Katalog</a>
         <a href="#partnership" onClick={closeMobile}>Mitra</a>
         <a href="#contact" onClick={closeMobile}>Kontak</a>
       </div>

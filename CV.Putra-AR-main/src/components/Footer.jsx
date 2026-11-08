@@ -27,7 +27,6 @@ export const Footer = () => {
           <ul className="footer-links">
             <li><a href="#home">Beranda Utama</a></li>
             <li><a href="#profile">Profil Perusahaan</a></li>
-            <li><a href="#gallery">Galeri Produk</a></li>
             <li><a href="#standards">Standar Mutu &amp; Lab</a></li>
             <li><a href="#products">Food Supply &amp; Katalog</a></li>
             <li><a href="#partnership">Kemitraan Food Supply</a></li>
