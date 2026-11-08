@@ -8,25 +8,25 @@ export const StandardsLab = () => {
       title: 'Sertifikasi Halal Resmi',
       desc: 'Bahan baku daging dan bumbu rempah tersertifikasi 100% Halal dan Thoyyib sesuai ketentuan MUI dan BPJPH.',
       icon: <Shield size={22} />,
-      img: 'img/gallery/facility_cleanroom.webp',
+      img: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&q=80',
     },
     {
       title: 'Bebas Pengawet Kimia',
       desc: 'Teruji laboratorium bebas dari formalin, boraks, maupun pemutih sintetis untuk keselamatan konsumen.',
       icon: <CheckCircle size={22} />,
-      img: 'img/gallery/quality_lab.webp',
+      img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80',
     },
     {
       title: 'Rantai Dingin Terpadu',
       desc: 'Fasilitas cold storage modern dan armada berpendingin untuk menjaga kesegaran produk selama distribusi.',
       icon: <Truck size={22} />,
-      img: 'img/gallery/cold_storage_armada.webp',
+      img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80',
     },
     {
       title: 'Otomasi Mesin Modern',
       desc: 'Teknologi mesin mutakhir berstandar Jepang menjaga higienitas, presisi bentuk, dan kestabilan rasa.',
       icon: <Cpu size={22} />,
-      img: 'img/gallery/kwetiau_raw.webp',
+      img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
     },
   ];
 
