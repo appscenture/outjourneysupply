@@ -1594,23 +1594,6 @@ img {
 .meal-package-card.meal-package-card-solid > h4,
 .meal-package-card-solid .meal-package-group h5 {
   color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-}
-
-.meal-package-card.meal-package-card-solid > h4 {
-  width: fit-content;
-  padding: 7px 11px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 10px;
-  background: rgba(3, 10, 22, 0.82);
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.28);
-}
-
-.meal-package-card-solid .meal-package-group h5 {
-  width: fit-content;
-  padding: 4px 8px;
-  border-radius: 6px;
-  background: rgba(3, 10, 22, 0.58);
 }
 
 .meal-package-card-solid .meal-package-group {
@@ -1619,7 +1602,6 @@ img {
 
 .meal-package-card-solid .meal-package-group ul {
   color: #ffffff;
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.55);
 }
 
 .meal-package-card::before {
