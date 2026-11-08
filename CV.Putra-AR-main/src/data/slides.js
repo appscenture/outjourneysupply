@@ -7,7 +7,7 @@ export const filmSlides = [
     lens: 'ANAMORPHIC 35MM // T1.5',
     iso: 'ISO 200',
     fps: '24 FPS',
-    image: 'img/imgcvputra/mainpage.webp',
+    image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1920&q=85',
   },
   {
     id: 2,
