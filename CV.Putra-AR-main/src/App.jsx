@@ -10,6 +10,7 @@ import { Partnership } from './components/Partnership';
 import { ContactSection } from './components/ContactSection';
 import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
+import { WhatsAppWidget } from './components/WhatsAppWidget';
 
 const AppContent = () => {
   const { toastVisible, toastMessage } = useCart();
@@ -39,6 +40,7 @@ const AppContent = () => {
       </main>
       <Footer />
 
+      <WhatsAppWidget />
       <CartDrawer />
       {toastVisible && (
         <div className="site-toast">

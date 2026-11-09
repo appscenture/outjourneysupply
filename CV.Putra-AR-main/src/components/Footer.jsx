@@ -13,7 +13,7 @@ export const Footer = () => {
               alt="Outjourney Logo"
               style={{ width: 36, height: 36, objectFit: 'contain' }}
             />
-            <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff' }}>
+            <span style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-primary)' }}>
               Outjourney
             </span>
           </div>

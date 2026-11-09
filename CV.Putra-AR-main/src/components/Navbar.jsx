@@ -26,7 +26,7 @@ export const Navbar = ({ onSearchClick }) => {
           className="brand-logo"
         />
         <span className="brand-name">
-          Outjourney
+          <em>Outjourney</em>
         </span>
       </a>
 

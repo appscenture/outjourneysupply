@@ -156,7 +156,7 @@ img {
 .brand-name {
   font-size: 1.15rem;
   font-weight: 800;
-  color: var(--color-text-main);
+  color: var(--color-primary);
   letter-spacing: -0.02em;
 }
 
@@ -2354,14 +2354,48 @@ img {
   z-index: 300;
 }
 
+.whatsapp-widget {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 250;
+  display: grid;
+  width: 60px;
+  height: 60px;
+  place-items: center;
+  color: #ffffff;
+  background: #25d366;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.22);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.whatsapp-widget:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.25);
+}
+
+.whatsapp-widget:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+.whatsapp-widget svg {
+  width: 31px;
+  height: 31px;
+}
+
 /* ==========================================================================
    Footer
    ========================================================================== */
 .footer-corporate {
-  background-color: #060d1a;
-  color: #94a3b8;
+  background:
+    radial-gradient(circle, rgba(29, 78, 216, 0.11) 1px, transparent 1.5px) 0 0 / 24px 24px,
+    linear-gradient(135deg, #f8fbff 0%, #edf4fc 100%);
+  color: #475569;
   padding: 70px 6% 30px;
-  border-top: 1px solid #13213a;
+  border-top: 1px solid #dbe7f5;
 }
 
 .footer-grid {
@@ -2375,7 +2409,7 @@ img {
 .footer-col h4 {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #12315c;
   margin-bottom: 18px;
   letter-spacing: -0.01em;
 }
@@ -2383,7 +2417,7 @@ img {
 .footer-col p {
   font-size: 0.85rem;
   line-height: 1.7;
-  color: #94a3b8;
+  color: #52657d;
 }
 
 .footer-links {
@@ -2395,19 +2429,19 @@ img {
 
 .footer-links a {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: #52657d;
   transition: color var(--transition-fast);
 }
 
 .footer-links a:hover {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .footer-bottom {
   max-width: 1180px;
   margin: 0 auto;
   padding-top: 24px;
-  border-top: 1px solid #13213a;
+  border-top: 1px solid #d5e1ef;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -3191,14 +3225,14 @@ img {
 
   .footer-corporate {
     background:
-      radial-gradient(ellipse at 4% 0%, rgba(37, 99, 235, 0.28), transparent 34%),
-      #0a1324;
-    border-top: 0;
+      radial-gradient(circle, rgba(29, 78, 216, 0.11) 1px, transparent 1.5px) 0 0 / 24px 24px,
+      linear-gradient(135deg, #f8fbff 0%, #edf4fc 100%);
+    border-top: 1px solid #dbe7f5;
   }
 
   .footer-links a:hover,
   .footer-col p a:hover {
-    color: #7dd3fc;
+    color: var(--color-primary);
   }
 
   .action-btn,
