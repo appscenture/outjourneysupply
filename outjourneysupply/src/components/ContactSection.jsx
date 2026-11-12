@@ -45,9 +45,9 @@ export const ContactSection = () => {
             <div>
               <h4 style={{ fontWeight: 700, marginBottom: 4 }}>Kantor</h4>
               <p style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)' }}>
-                Jl. Chairil Anwar Blok C No.09 - 10<br />
-                RT.003/RW.012, Margahayu<br />
-                Kec. Bekasi Tim., Kabupaten Bekasi<br />
+                Jl. Chairil Anwar Blok C No.09 - 10, <br />
+                RT.003/RW.012, Margahayu, <br />
+                Kec. Bekasi Tim., Kabupaten Bekasi, <br />
                 Jawa Barat 17113, Indonesia
               </p>
             </div>

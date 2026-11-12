@@ -47,9 +47,9 @@ export const Footer = () => {
         <div className="footer-col">
           <h4>Kontak &amp; Kantor</h4>
           <p style={{ marginBottom: 10 }}>
-            Jl. Chairil Anwar Blok C No.09 - 10<br />
-            RT.003/RW.012, Margahayu<br />
-            Kec. Bekasi Tim., Kabupaten Bekasi<br />
+            Jl. Chairil Anwar Blok C No.09 - 10, <br />
+            RT.003/RW.012, Margahayu, <br />
+            Kec. Bekasi Tim., Kabupaten Bekasi, <br />
             Jawa Barat 17113, Indonesia
           </p>
           <p style={{ marginBottom: 6 }}>
