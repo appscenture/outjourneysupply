@@ -7,7 +7,7 @@ export const TopBar = () => {
       <div className="top-notice-left">
         <div className="top-notice-item">
           <MapPin />
-          <span>Tower 3 Pondok Indah Mall, Jakarta 12310</span>
+          <span>Jl. Chairil Anwar Blok C No.09 - 10, RT.003/RW.012, Margahayu, Kec. Bekasi Tim., Kabupaten Bekasi, Jawa Barat 17113, Indonesia</span>
         </div>
         <div className="top-notice-item">
           <Globe />

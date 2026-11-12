@@ -47,9 +47,10 @@ export const Footer = () => {
         <div className="footer-col">
           <h4>Kontak &amp; Kantor</h4>
           <p style={{ marginBottom: 10 }}>
-            Tower 3 Pondok Indah Mall<br />
-            Jl. Sultan Iskandar Muda, Kav. V-TA, Pondok Indah<br />
-            Jakarta 12310
+            Jl. Chairil Anwar Blok C No.09 - 10<br />
+            RT.003/RW.012, Margahayu<br />
+            Kec. Bekasi Tim., Kabupaten Bekasi<br />
+            Jawa Barat 17113, Indonesia
           </p>
           <p style={{ marginBottom: 6 }}>
             <a href="tel:+6281388882473">+62 813-8888-2473</a>
