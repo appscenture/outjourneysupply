@@ -1,5 +1,8 @@
 on: push
 name: Deploy website on push
+defaults:
+  run:
+    working-directory: outjourneysupply
 jobs:
   web-deploy:
     name: Deploy
@@ -28,7 +31,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: dist/
+        local-dir: outjourneysupply/dist/
 
     - name: Verification Notice
       if: ${{ env.FTP_SERVER == '' }}
