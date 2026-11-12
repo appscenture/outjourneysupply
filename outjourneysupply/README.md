@@ -113,7 +113,7 @@ sequenceDiagram
    - `CartDrawer.jsx`: Slide-over shopping drawer with dynamic quantity multipliers and total sum calculation.
    - `StandardsLab.jsx`: Lab test documentation, Halal compliance showcase, and cold-chain temperature verification.
    - `Partnership.jsx`: Multi-tier wholesale portal with interactive benefit breakdown and qualification matrices.
-   - `ContactSection.jsx`: Direct communication channels to plant management and Sukahurip manufacturing facility map.
+   - `ContactSection.jsx`: Direct communication channels to plant management and the Bekasi office.
 2. **Application State Layer (`src/context/CartContext.jsx`)**:
    - Context-driven cart management with persistent local state.
    - Automated currency formatting (`Intl.NumberFormat('id-ID', 'IDR')`).
@@ -512,7 +512,7 @@ Once pushed, GitHub Actions compiles `dist/` (including all static React bundles
 
 Copyright (c) 2017–2026 **CV. Putra AR**. All rights reserved.
 
-This source code, user interface designs, architectural blueprints, and associated media assets are proprietary commercial property belonging exclusively to **CV. Putra AR** (Sukahurip, Kabupaten Ciamis, Jawa Barat 46262, Indonesia).
+This source code, user interface designs, architectural blueprints, and associated media assets are proprietary commercial property belonging exclusively to **CV. Putra AR** (Jl. Chairil Anwar Blok C No.09 - 10, RT.003/RW.012, Margahayu, Kec. Bekasi Tim., Kabupaten Bekasi, Jawa Barat 17113, Indonesia).
 
 1. **Internal Use Only**: Strictly intended for internal factory operations, B2B wholesale partner intake, and brand distribution of CV. Putra AR.
 2. **No Unauthorized Redistribution**: No part of this software may be copied, modified, distributed, sublicensed, decompiled, or reverse-engineered in any form or by any means without prior explicit written authorization from CV. Putra AR management.
@@ -522,7 +522,7 @@ This source code, user interface designs, architectural blueprints, and associat
 
 ## Authorship & Engineering Credits
 
-* **Enterprise Client**: [CV. Putra AR](https://cvputraar.my.id) — Sukahurip, Kabupaten Ciamis, Jawa Barat 46262.
+* **Enterprise Client**: [CV. Putra AR](https://cvputraar.my.id) — Jl. Chairil Anwar Blok C No.09 - 10, RT.003/RW.012, Margahayu, Kec. Bekasi Tim., Kabupaten Bekasi, Jawa Barat 17113, Indonesia.
 * **Lead Software Engineer**: **Fauzi Noorsyabani**
   - **Education**: Institut Teknologi Bandung (B.Eng in Computer Science, Cum Laude, GPA: 3.59/4.00)
   - **Projects & Core Engineering**:
