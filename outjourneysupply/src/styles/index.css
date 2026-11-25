@@ -5098,13 +5098,12 @@ body {
     }
 
     .store-product-purchase {
-      align-items: flex-start;
-      flex-direction: column;
+      align-items: center;
+      flex-direction: row;
     }
 
-    .store-product-purchase button,
     .store-product-inquiry {
-      width: 100%;
+      flex: 1;
     }
 
     .store-meal-grid,
@@ -5217,9 +5216,14 @@ body {
 
   .store-product-purchase {
     align-items: stretch;
+    flex-direction: row;
     gap: 5px;
     margin-top: auto;
     padding-top: 7px;
+  }
+
+  .store-product-inquiry {
+    flex: 1;
   }
 
   .store-product-purchase > strong {
