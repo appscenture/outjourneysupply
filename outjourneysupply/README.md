@@ -29,6 +29,8 @@ For isolated local database development:
 
 To enable Google sign-in, configure the Google provider in Supabase Auth with your Google OAuth client ID and secret. Add `http://localhost:3000/auth/callback` to Supabase's allowed redirect URLs, and configure Supabase's callback URL (`https://<project-ref>.supabase.co/auth/v1/callback`) as an authorized redirect URI in Google Cloud. Google must return the same email configured by `NEXT_PUBLIC_ADMIN_LOGIN_EMAIL` to access the admin workspace.
 
+For Vercel or another deployment, set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `NEXT_PUBLIC_ADMIN_LOGIN_EMAIL` in the deployment environment before building. The last value is the existing Auth account email; it is public configuration, not a password or secret.
+
 ## Database design
 
 The initial migration creates 19 RLS-enabled application tables:
