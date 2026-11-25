@@ -22,12 +22,15 @@ import {
   Filter,
   LayoutDashboard,
   LogOut,
+  Mail,
   Menu,
   Minus,
+  MoreHorizontal,
   Package,
   Plus,
   QrCode,
   Search,
+  Send,
   Settings,
   ShieldCheck,
   ShoppingBag,
@@ -57,7 +60,7 @@ const initialOrders = [
 
 const navigation = [
   { section: "Workspace", items: [{ id: "overview", label: "Overview", icon: LayoutDashboard }, { id: "catalog", label: "Quick order", icon: ShoppingBag, badge: "⌘ K" }, { id: "orders", label: "Purchase orders", icon: FileText, count: "3" }] },
-  { section: "Operations", items: [{ id: "inventory", label: "Inventory", icon: Package, count: "2" }, { id: "suppliers", label: "Suppliers", icon: Users }, { id: "payments", label: "Payments", icon: Wallet }] },
+  { section: "Operations", items: [{ id: "inventory", label: "Inventory", icon: Package, count: "2" }, { id: "suppliers", label: "Suppliers", icon: Users }, { id: "payments", label: "Payments", icon: Wallet }, { id: "email", label: "Email & notifications", icon: Mail }] },
   { section: "Point of sale", items: [{ id: "pos", label: "Counter POS", icon: CreditCard }] },
 ];
 
@@ -169,6 +172,14 @@ export default function WorkspaceClient({ userName = "Admin" }) {
   const [toast, setToast] = useState("");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [ready, setReady] = useState(false);
+  const [smtpSettings, setSmtpSettings] = useState({
+    host: "mail.outjourney.id",
+    port: "587",
+    username: "connect@outjourney.id",
+    senderName: "Outjourney",
+    password: "",
+  });
+  const [emailTemplate, setEmailTemplate] = useState("Your Outjourney document {{document_number}} is ready.\n\nAmount: {{amount}}\nDue date: {{due_date}}\n\nView or download the document: {{document_url}}\n\nOutjourney");
 
   const handleSignOut = async () => {
     try {
@@ -221,6 +232,19 @@ export default function WorkspaceClient({ userName = "Admin" }) {
     return () => window.clearTimeout(timeout);
   }, [toast]);
 
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem("outjourney-email-settings");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.smtp) setSmtpSettings((current) => ({ ...current, ...parsed.smtp }));
+        if (parsed.template) setEmailTemplate(parsed.template);
+      }
+    } catch (error) {
+      console.error("Could not restore email settings.", error);
+    }
+  }, []);
+
   const cartItems = useMemo(() => products.filter((product) => cart[product.id]).map((product) => ({ ...product, quantity: cart[product.id] })), [cart]);
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -234,6 +258,15 @@ export default function WorkspaceClient({ userName = "Admin" }) {
     setActivePage(page);
     setMobileNavOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const saveEmailSettings = () => {
+    try {
+      window.localStorage.setItem("outjourney-email-settings", JSON.stringify({ smtp: { ...smtpSettings, password: "" }, template: emailTemplate }));
+      setToast("Email settings and template saved");
+    } catch (error) {
+      console.error("Could not save email settings.", error);
+      setToast("Could not save email settings");
+    }
   };
   const addItem = (product) => setCart((current) => ({ ...current, [product.id]: (current[product.id] || 0) + 1 }));
   const removeItem = (id) => setCart((current) => {
@@ -404,6 +437,31 @@ export default function WorkspaceClient({ userName = "Admin" }) {
             <div className="info-banner"><QrCode size={17} /><span>QRIS payments are a preview only—connect a payment provider before accepting real payments.</span><button onClick={() => setToast("Payment provider integration is not configured")}>Integration details</button></div>
           </>}
 
+          {activePage === "email" && <>
+            <SectionTitle eyebrow="COMMUNICATIONS" title="Email & notifications" description="Configure SMTP delivery and client document templates." action={<button className="button button-dark" onClick={saveEmailSettings}><Send size={16} /> Save settings</button>} />
+            <div className="email-settings-grid">
+              <section className="email-settings-card">
+                <div className="email-card-heading"><span className="email-card-icon"><Mail size={18} /></span><div><div className="eyebrow">SMTP</div><h2>Mail server</h2></div></div>
+                <div className="email-form-grid">
+                  <label>Host<input value={smtpSettings.host} onChange={(event) => setSmtpSettings((current) => ({ ...current, host: event.target.value }))} /></label>
+                  <label>Port<input value={smtpSettings.port} onChange={(event) => setSmtpSettings((current) => ({ ...current, port: event.target.value }))} /></label>
+                  <label>Sender email<input type="email" value={smtpSettings.username} onChange={(event) => setSmtpSettings((current) => ({ ...current, username: event.target.value }))} /></label>
+                  <label>Sender name<input value={smtpSettings.senderName} onChange={(event) => setSmtpSettings((current) => ({ ...current, senderName: event.target.value }))} /></label>
+                  <label className="email-password-field">Password<input type="password" value={smtpSettings.password} onChange={(event) => setSmtpSettings((current) => ({ ...current, password: event.target.value }))} placeholder="SMTP password" /></label>
+                </div>
+              </section>
+              <section className="email-settings-card">
+                <div className="email-card-heading"><span className="email-card-icon"><FileText size={18} /></span><div><div className="eyebrow">TEMPLATE</div><h2>Client document email</h2></div></div>
+                <textarea className="email-template" value={emailTemplate} onChange={(event) => setEmailTemplate(event.target.value)} />
+                <div className="email-template-vars"><span>{'{{document_number}}'}</span><span>{'{{amount}}'}</span><span>{'{{due_date}}'}</span><span>{'{{document_url}}'}</span></div>
+              </section>
+            </div>
+            <div className="email-notification-card">
+              <div><ShieldCheck size={18} /><span><strong>Client notifications</strong><small>Invoices, payment reminders, RFQs, contracts, and delivery updates</small></span></div>
+              <StatusPill>Enabled</StatusPill>
+            </div>
+          </>}
+
           {activePage === "pos" && <>
             <SectionTitle eyebrow="COUNTER SALES" title="A faster checkout at the counter." description="Add products, check stock, and record a walk-in sale in a few taps." action={<span className="pos-mode-pill"><span /> POS demo mode</span>} />
             <div className="pos-layout"><div className="pos-products"><div className="catalog-toolbar"><label className="search-field"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Find a product..." /></label><button className="filter-button"><Filter size={16} /> All items</button></div><div className="pos-product-grid">{products.filter((product) => `${product.name} ${product.localName}`.toLowerCase().includes(query.toLowerCase())).map((product) => <ProductTile key={product.id} product={{ ...product, stock: stock[product.id] ?? product.stock }} quantity={cart[product.id] || 0} onAdd={addItem} onRemove={removeItem} pos />)}</div></div>
@@ -414,6 +472,14 @@ export default function WorkspaceClient({ userName = "Admin" }) {
         </div>
         <footer className="app-footer"><span>© 2026 Outjourney · Food service, moving forward.</span><span><span className="online-dot" /> All systems operational <span className="footer-divider">·</span> Demo environment</span></footer>
       </main>
+
+      <nav className="mobile-bottom-nav" aria-label="Workspace navigation">
+        <button className={activePage === "overview" ? "active" : ""} onClick={() => setPage("overview")}><LayoutDashboard size={20} /><span>Home</span></button>
+        <button className={activePage === "catalog" ? "active" : ""} onClick={() => setPage("catalog")}><ShoppingBag size={20} /><span>Catalog</span></button>
+        <button className={activePage === "orders" ? "active" : ""} onClick={() => setPage("orders")}><FileText size={20} /><span>Orders</span></button>
+        <button className={activePage === "inventory" ? "active" : ""} onClick={() => setPage("inventory")}><Package size={20} /><span>Stock</span></button>
+        <button onClick={handleSignOut}><LogOut size={20} /><span>Account</span></button>
+      </nav>
 
       {checkoutOpen && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCheckoutOpen(false); }}><section className="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title"><div className="modal-top"><span className="modal-icon"><FileText size={18} /></span><button className="icon-button" onClick={() => setCheckoutOpen(false)} aria-label="Close checkout"><X size={19} /></button></div><div className="eyebrow">PURCHASE ORDER · {cartCount} ITEMS</div><h2 id="checkout-title">Everything ready?</h2><p className="modal-subtitle">Review your delivery and payment preference before sending this order.</p><div className="checkout-detail-row"><span><Truck size={16} /> Delivery estimate</span><strong>{daysUntilDelivery()} · 08:00–12:00</strong></div><div className="checkout-delivery-note"><Clock3 size={15} /><span>Estimated for Bekasi cold-chain route. Final timing is confirmed by your supplier.</span></div><div className="checkout-method-label">Payment preference</div><div className="checkout-methods"><button className={paymentMethod === "QRIS" ? "checkout-method selected" : "checkout-method"} onClick={() => setPaymentMethod("QRIS")}><span className="method-radio" /><QrCode size={18} /><span><strong>QRIS</strong><small>Payment preview · not connected</small></span></button><button className={paymentMethod === "Invoice" ? "checkout-method selected" : "checkout-method"} onClick={() => setPaymentMethod("Invoice")}><span className="method-radio" /><FileText size={18} /><span><strong>Invoice</strong><small>Terms set by your supplier</small></span></button></div><div className="checkout-final-total"><span>Estimated order total</span><strong>{money(cartTotal)}</strong></div><button className="button button-dark checkout-submit" onClick={createPurchaseOrder}>Place purchase order <ArrowRight size={16} /></button><p className="checkout-legal"><ShieldCheck size={13} /> Demo order · no payment or supplier notification is sent</p></section></div>}
 

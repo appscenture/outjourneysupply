@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Eye, EyeOff, LockKeyhole } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, LockKeyhole, Users } from "lucide-react";
 import { getSupabaseClient } from "../../lib/supabase/client";
 
 export default function LoginPage() {
@@ -202,6 +202,13 @@ export default function LoginPage() {
           <span className="login-google-mark" aria-hidden="true">G</span>
           {googleLoading ? "Connecting to Google..." : "Continue with Google"}
         </button>
+
+        <div className="login-divider"><span>choose workspace</span></div>
+        <Link className="login-client-button" href="/client/login">
+          <Users size={17} />
+          Client login
+          <ArrowRight size={17} />
+        </Link>
 
         <div className="login-security-note">
           <LockKeyhole size={15} />

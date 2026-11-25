@@ -453,6 +453,20 @@ h1, h2, h3, p { margin-top: 0; }
 @media (max-width: 680px) {
   .sidebar { z-index: 61; width: min(290px, 84vw); padding-top: max(20px, env(safe-area-inset-top)); transform: translateX(-105%); transition: transform .24s ease; box-shadow: none; }
   .sidebar.sidebar-open { transform: translateX(0); box-shadow: 20px 0 60px #10162026; }
+  .mobile-bottom-nav { position: fixed; right: 0; bottom: 0; left: 0; z-index: 55; display: flex; height: calc(68px + env(safe-area-inset-bottom)); align-items: flex-start; padding: 7px 8px env(safe-area-inset-bottom); border-top: 1px solid #e1e7ef; background: rgba(255,255,255,.96); backdrop-filter: blur(16px); }
+  .mobile-bottom-nav button { display: flex; min-width: 0; flex: 1; align-items: center; flex-direction: column; gap: 4px; border: 0; color: #8792a1; background: transparent; font-size: 9px; }
+  .mobile-bottom-nav button.active { color: #004aad; }
+  .page-content { padding-bottom: 92px; }
+  .email-settings-grid { grid-template-columns: 1fr; }
+  .email-form-grid { grid-template-columns: 1fr 82px; }
+  .email-notification-card { align-items: flex-start; gap: 10px; }
+  .client-bottom-nav { display: flex; }
+  .client-header { height: 60px; padding: 0 16px; }
+  .client-header img { width: 132px; }
+  .client-content { width: calc(100% - 28px); padding: 18px 0; }
+  .client-welcome h1 { font-size: 24px; }
+  .client-grid { grid-template-columns: 1fr; }
+  .client-card { min-height: 150px; }
   .mobile-backdrop { position: fixed; inset: 0; z-index: 60; display: block; border: 0; background: rgba(22, 26, 34, .4); }
   .close-mobile, .mobile-menu { display: grid !important; }
   .main-area { margin-left: 0; }
@@ -552,8 +566,8 @@ h1, h2, h3, p { margin-top: 0; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
-.login-shell { display: grid; min-height: 100svh; place-items: center; padding: 24px; background: radial-gradient(ellipse at 50% 0%, #dceaff 0%, transparent 52%), #f5f7fb; }
-.login-card { width: min(100%, 440px); padding: clamp(26px, 5vw, 42px); border: 1px solid #e5eaf2; border-radius: 18px; background: #fff; box-shadow: 0 24px 70px #17365b14; }
+.login-shell { display: grid; min-height: 100svh; place-items: center; padding: 24px; background: #f4f6f8; }
+.login-card { width: min(100%, 420px); padding: 36px; border: 1px solid #e7ebf0; border-radius: 16px; background: #fff; box-shadow: 0 12px 36px rgba(24, 39, 75, .08); }
 .login-brand { display: flex; width: 100%; justify-content: center; margin-bottom: 30px; }
 .login-brand img { display: block; width: 184px; height: auto; }
 .login-eyebrow { color: #004aad; font-size: 10px; font-weight: 700; letter-spacing: .12em; }
@@ -582,6 +596,73 @@ h1, h2, h3, p { margin-top: 0; }
 .login-security-note svg { color: #4b78b7; }
 .login-home-link { display: block; width: fit-content; margin: 22px auto 0; color: #53647b; font-size: 10px; text-decoration: none; }
 .login-home-link:hover { color: #004aad; }
+
+.login-client-button { display: flex; width: 100%; min-height: 45px; align-items: center; justify-content: center; gap: 10px; border: 1px solid #dfe5ed; border-radius: 8px; color: #34445a; background: #fff; text-decoration: none; font-size: 12px; font-weight: 600; }
+.login-client-button:hover { border-color: #b8c5d6; background: #f9fbfd; }
+.login-mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: -12px 0 18px; padding: 4px; border-radius: 10px; background: #f1f4f8; }
+.login-mode-switch button { min-height: 38px; border: 0; border-radius: 8px; color: #7d8999; background: transparent; font-size: 11px; font-weight: 700; }
+.login-mode-switch button.active { color: #004aad; background: #fff; box-shadow: 0 2px 10px #1b3a5a12; }
+.email-settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.email-settings-card { padding: 16px; border: 1px solid #e2e8f1; border-radius: 14px; background: #fff; }
+.email-card-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.email-card-heading h2 { margin: 3px 0 0; font-size: 16px; }
+.email-card-icon { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 10px; color: #4e6e98; background: #edf4fd; }
+.email-form-grid { display: grid; grid-template-columns: 1fr 100px; gap: 10px; }
+.email-form-grid label { display: grid; gap: 6px; color: #66758a; font-size: 10px; font-weight: 700; }
+.email-form-grid input { min-height: 40px; padding: 0 10px; border: 1px solid #dde5ef; border-radius: 8px; outline: none; color: #26384f; background: #fff; }
+.email-form-grid input:focus { border-color: #3775cb; box-shadow: 0 0 0 3px #004aad12; }
+.email-password-field { grid-column: 1/-1; }
+.email-template { width: 100%; min-height: 142px; resize: vertical; padding: 11px; border: 1px solid #dde5ef; border-radius: 8px; outline: none; color: #26384f; line-height: 1.55; }
+.email-template:focus { border-color: #3775cb; box-shadow: 0 0 0 3px #004aad12; }
+.email-template-vars { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.email-template-vars span { padding: 5px 7px; border-radius: 6px; color: #58718f; background: #edf3fa; font-size: 9px; }
+.email-notification-card { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding: 13px 15px; border: 1px solid #e2e8f1; border-radius: 12px; background: #fff; }
+.email-notification-card > div { display: flex; align-items: center; gap: 10px; color: #4e6e98; }
+.email-notification-card > div span { display: flex; flex-direction: column; gap: 3px; color: #26384f; }
+.email-notification-card small { color: #8792a1; }
+
+.mobile-bottom-nav { display: none; }
+
+.client-shell { min-height: 100svh; padding-bottom: max(78px, calc(env(safe-area-inset-bottom) + 78px)); background: #f4f7fb; }
+.client-header { position: sticky; top: 0; z-index: 20; display: flex; height: 68px; align-items: center; justify-content: space-between; padding: 0 max(18px, calc((100vw - 1120px)/2)); border-bottom: 1px solid #e6ebf3; background: rgba(255,255,255,.94); backdrop-filter: blur(14px); }
+.client-header img { width: 142px; height: auto; }
+.client-avatar { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid #dde5ef; border-radius: 12px; color: #4d6481; background: #fff; }
+.client-content { width: min(calc(100% - 36px), 1120px); margin: 0 auto; padding: 24px 0; }
+.client-welcome { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 18px; }
+.client-welcome span { color: #7d8999; font-size: 12px; }
+.client-welcome h1 { margin: 4px 0 0; font-family: Manrope, sans-serif; font-size: 28px; letter-spacing: -.04em; }
+.client-status { padding: 7px 9px; border-radius: 999px; color: #2f63a9; background: #eaf2fd; font-size: 10px !important; font-weight: 700; }
+.client-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 12px; }
+.client-card { min-width: 0; min-height: 182px; padding: 17px; border: 1px solid #e2e8f1; border-radius: 16px; background: #fff; box-shadow: 0 8px 24px #1b3a5a0a; }
+.client-card-label { display: flex; align-items: center; gap: 7px; color: #718096; font-size: 11px; font-weight: 700; }
+.client-card h2 { margin: 24px 0 7px; font-size: 20px; }
+.client-card p { color: #7d8999; font-size: 11px; }
+.client-card button { display: inline-flex; align-items: center; gap: 7px; margin-top: 18px; padding: 0; border: 0; color: #004aad; background: transparent; font-size: 11px; font-weight: 700; }
+.client-highlight { color: #fff; border: 0; background: linear-gradient(135deg, #004aad, #2d71c6); }
+.client-highlight .client-card-label, .client-highlight p { color: #dceaff; }
+.client-highlight button { color: #fff; }
+.client-progress { height: 5px; overflow: hidden; margin-top: 19px; border-radius: 99px; background: #ffffff35; }
+.client-progress span { display: block; width: 68%; height: 100%; border-radius: inherit; background: #fff; }
+.client-big-value { display: block; margin-top: 26px; color: #17263c; font-family: Manrope, sans-serif; font-size: 20px; }
+.client-card .client-primary { min-height: 38px; justify-content: center; width: 100%; border-radius: 8px; color: #fff; background: #004aad; }
+.client-section { margin-top: 14px; padding: 16px; border: 1px solid #e2e8f1; border-radius: 16px; background: #fff; }
+.client-section-head { display: flex; align-items: center; justify-content: space-between; }
+.client-section-head h2 { margin: 0; font-size: 16px; }
+.client-section-head button { border: 0; color: #004aad; background: transparent; font-size: 11px; font-weight: 700; }
+.client-invoice-list { display: grid; gap: 8px; margin-top: 12px; }
+.client-invoice { display: grid; grid-template-columns: 42px 1fr auto; align-items: center; width: 100%; padding: 10px; border: 1px solid #edf1f6; border-radius: 12px; background: #fbfcfe; text-align: left; }
+.client-invoice-icon { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 10px; color: #4e6e98; background: #edf4fd; }
+.client-invoice > span:nth-child(2), .client-invoice-amount { display: flex; flex-direction: column; gap: 4px; }
+.client-invoice small { color: #8792a1; }
+.client-invoice-amount { align-items: flex-end; }
+.client-invoice-amount .paid { color: #27765a; }
+.client-placeholder { min-height: 420px; text-align: center; }
+.client-placeholder-icon { display: grid; width: 54px; height: 54px; place-items: center; margin: 90px auto 16px; border-radius: 16px; color: #4e6e98; background: #edf4fd; }
+.client-placeholder h1 { margin-bottom: 7px; }
+.client-placeholder p { color: #8792a1; }
+.client-bottom-nav { position: fixed; right: 0; bottom: 0; left: 0; z-index: 40; display: none; height: calc(68px + env(safe-area-inset-bottom)); align-items: flex-start; padding: 7px 8px env(safe-area-inset-bottom); border-top: 1px solid #e1e7ef; background: rgba(255,255,255,.96); backdrop-filter: blur(16px); }
+.client-bottom-nav button { display: flex; min-width: 0; flex: 1; align-items: center; flex-direction: column; gap: 4px; border: 0; color: #8792a1; background: transparent; font-size: 9px; }
+.client-bottom-nav button.active { color: #004aad; }
 
 @media (max-width: 480px) {
   .login-shell { padding: 14px; }
