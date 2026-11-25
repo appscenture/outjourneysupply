@@ -4196,28 +4196,6 @@ body {
   background: #f7f8fa;
 }
 
-.store-footer-content {
-  display: flex;
-  max-width: 1120px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin: 0 auto;
-}
-
-.store-footer-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #788397;
-  font-size: .78rem;
-}
-
-.store-footer-brand img {
-  width: 94px;
-}
-
-.store-footer-content > a:last-child,
 .footer-bottom a {
   color: #53647b;
   font-size: .78rem;
@@ -4540,11 +4518,6 @@ body {
 
   .partnership-tiers-grid {
     grid-template-columns: 1fr;
-  }
-
-  .store-footer-content {
-    align-items: flex-start;
-    flex-direction: column;
   }
 
   .footer-bottom {
@@ -5118,11 +5091,6 @@ body {
     .contact-form-card .form-group:nth-child(n + 3),
     .contact-form-card .btn-form-submit {
       grid-column: 1 / -1;
-    }
-
-    .store-footer-content {
-      align-items: flex-start;
-      flex-direction: column;
     }
 
     .store-bottom-nav {
