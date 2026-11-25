@@ -263,7 +263,7 @@ export const ProductCatalog = ({ searchQuery, onSearchChange, showCartButton = t
                     <h3><Link href={`/products/${encodeURIComponent(product.sku)}`}>{product.name}</Link></h3>
                     <span className="store-product-unit">{product.unit}</span>
                     <div className="store-product-purchase">
-                      <strong>{product.price > 0 ? formatRupiah(product.price) : 'Tanya harga'}</strong>
+                      {product.price > 0 && <strong>{formatRupiah(product.price)}</strong>}
                       {product.price > 0 ? (
                         <button type="button" onClick={() => addItem(product)} aria-label={`Tambah ${product.name} ke keranjang`}>
                           {quantity > 0 ? <span>{quantity} in cart</span> : <><Plus size={16} /> Tambah</>}
@@ -274,8 +274,9 @@ export const ProductCatalog = ({ searchQuery, onSearchChange, showCartButton = t
                           href={`https://wa.me/${foodSupplyWhatsApp}?text=${encodeURIComponent(`Halo Outjourney, mohon informasi harga ${product.name} (${product.unit}).`)}`}
                           target="_blank"
                           rel="noreferrer"
+                          aria-label={`Tanya harga ${product.name}`}
                         >
-                          Tanya <ArrowUpRight size={14} />
+                          Tanya harga <ArrowUpRight size={14} />
                         </a>
                       )}
                     </div>
