@@ -1,41 +1,23 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, MessageCircle } from 'lucide-react';
+import { Building2, Leaf, MessageCircle, Utensils } from 'lucide-react';
 
 export const Partnership = () => {
   const tiers = [
     {
-      badge: 'Food Supply',
-      title: 'Pasokan Harian',
-      minOrder: 'Untuk kebutuhan rumah tangga dan usaha',
-      benefits: [
-        'Buah dan sayuran',
-        'Ayam, daging, ikan, dan seafood',
-        'Konfirmasi ketersediaan produk',
-      ],
-      isFeatured: false,
+      title: 'Food supply',
+      description: 'Bahan segar dan frozen',
+      icon: Leaf,
     },
     {
-      badge: 'Business Supply',
-      title: 'Pengadaan Bisnis',
-      minOrder: 'Untuk kantor, usaha, dan kebutuhan rutin',
-      benefits: [
-        'Pilihan produk frozen dan siap masak',
-        'Pembahasan kebutuhan dan jadwal pasokan',
-        'Penawaran berdasarkan daftar kebutuhan',
-      ],
-      isFeatured: true,
+      title: 'Business supply',
+      description: 'Pasokan rutin bisnis',
+      icon: Building2,
     },
     {
-      badge: 'Meal Supply',
-      title: 'Paket Menu',
-      minOrder: 'Pilihan paket mulai Rp23.000',
-      benefits: [
-        'Pilihan menu breakfast, lunch, dan dinner',
-        'Pilihan paket Rp23.000, Rp25.000, Rp28.000, dan Rp30.000',
-        'Hubungi kami untuk pemesanan',
-      ],
-      isFeatured: false,
+      title: 'Paket makan',
+      description: 'Menu harian mulai Rp23.000',
+      icon: Utensils,
     },
   ];
 
@@ -50,44 +32,30 @@ export const Partnership = () => {
     <section className="section-partnership" id="partnership">
       <div className="partnership-container">
         <div className="partnership-header">
-          <span className="standards-eyebrow">Peluang Kerja Sama</span>
-          <h2>
-            Program Kemitraan &amp; <em className="italic">Food Supply</em>
-          </h2>
-          <p>
-            Hubungi tim kami untuk membahas kebutuhan pasokan pangan, pengadaan rutin, dan peluang kerja sama bisnis.
-          </p>
+          <span className="standards-eyebrow">Untuk bisnis</span>
+          <h2>Pasokan bisnis, lebih mudah.</h2>
         </div>
 
         <div className="partnership-tiers-grid">
           {tiers.map((tier, idx) => (
             <motion.div
               key={tier.title}
-              className={`tier-card ${tier.isFeatured ? 'featured' : ''}`}
+              className="tier-card"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.6, delay: idx * 0.15 }}
             >
-              <span className="tier-badge">{tier.badge}</span>
+              <span className="tier-icon"><tier.icon size={20} /></span>
               <h3 className="tier-title">{tier.title}</h3>
-              <p className="tier-min">{tier.minOrder}</p>
-
-              <ul className="tier-benefits">
-                {tier.benefits.map((benefit, i) => (
-                  <li key={i}>
-                    <Check />
-                    <span>{benefit}</span>
-                  </li>
-                ))}
-              </ul>
+              <p className="tier-min">{tier.description}</p>
 
               <button
                 type="button"
                 className="btn-tier-cta"
                 onClick={() => handleConsultation(tier.title)}
               >
-                <MessageCircle size={17} /> Ajukan Kemitraan
+                <MessageCircle size={16} /> Chat
               </button>
             </motion.div>
           ))}

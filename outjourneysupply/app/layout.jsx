@@ -1,5 +1,6 @@
 import "../src/styles/index.css";
 import "./globals.css";
+import { Providers } from "./providers";
 
 export const metadata = {
   title: "Outjourney | Food Supply & Paket Catering untuk Bisnis",
@@ -32,7 +33,7 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="id">
-      <body>{children}</body>
+      <body><Providers>{children}</Providers></body>
     </html>
   );
 }

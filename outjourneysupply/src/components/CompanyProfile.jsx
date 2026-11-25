@@ -4,26 +4,26 @@ import { Lightbulb, PackageCheck, Sparkles, UsersRound } from 'lucide-react';
 
 const profileHighlights = [
   {
-    title: 'Our mission',
-    text: 'Reliable essentials for smoother business days.',
+    title: 'Produk pilihan',
+    text: 'Bahan dan produk siap masak.',
     icon: PackageCheck,
     tone: 'blue',
   },
   {
-    title: 'Our vision',
-    text: 'A brighter world shaped by creativity and fun.',
+    title: 'Paket makan',
+    text: 'Menu harian untuk tim.',
     icon: Sparkles,
     tone: 'violet',
   },
   {
-    title: 'Why Outjourney',
-    text: 'Save time. Spend smarter. Keep moving forward.',
+    title: 'Pesan mudah',
+    text: 'Belanja, lalu cek pesanan.',
     icon: Lightbulb,
     tone: 'amber',
   },
   {
-    title: 'Made for',
-    text: 'Growing businesses, creative minds, and curious people.',
+    title: 'Untuk bisnis',
+    text: 'Pasokan rutin lebih praktis.',
     icon: UsersRound,
     tone: 'green',
   },
@@ -39,13 +39,12 @@ export const CompanyProfile = () => (
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.6 }}
       >
-        <span className="profile-eyebrow">A little about us</span>
+        <span className="profile-eyebrow">Tentang Outjourney</span>
         <h2 className="profile-heading">
-          Good business starts with <em className="italic">good ideas.</em>
+          Solusi pasokan <em className="italic">untuk bisnis.</em>
         </h2>
         <p>
-          Everyday essentials and fresh thinking, brought together to help you
-          move forward.
+          Produk, paket makan, dan layanan pasokan dalam satu tempat.
         </p>
       </motion.div>
 

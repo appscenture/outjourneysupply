@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Globe, Send } from 'lucide-react';
+import { MapPin, Phone, Send } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 export const ContactSection = () => {
@@ -21,13 +21,10 @@ export const ContactSection = () => {
   return (
     <section className="section-contact" id="contact">
       <div className="standards-header">
-        <span className="standards-eyebrow">Hubungi Perusahaan</span>
+        <span className="standards-eyebrow">Pesanan dan pertanyaan</span>
         <h2>
-          Hubungi Outjourney &amp; <em className="italic">Kantor Kami</em>
+          Kirim kebutuhan <em className="italic">bisnis Anda.</em>
         </h2>
-        <p>
-          Hubungi tim Outjourney untuk kebutuhan food supply, paket menu, dan kerja sama bisnis.
-        </p>
       </div>
 
       <div className="contact-layout">
@@ -44,7 +41,7 @@ export const ContactSection = () => {
             </div>
             <div>
               <h4 style={{ fontWeight: 700, marginBottom: 4 }}>Kantor</h4>
-              <p style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)' }}>
+              <p>
                 Jl. Chairil Anwar Blok C No.09 - 10, <br />
                 RT.003/RW.012, Margahayu, <br />
                 Kec. Bekasi Tim., Kabupaten Bekasi, <br />
@@ -58,23 +55,9 @@ export const ContactSection = () => {
               <Phone />
             </div>
             <div>
-              <h4 style={{ fontWeight: 700, marginBottom: 4 }}>Telepon &amp; WhatsApp</h4>
-              <p style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)' }}>
+              <h4 style={{ fontWeight: 700, marginBottom: 4 }}>WhatsApp</h4>
+              <p>
                 <a href="tel:+6281388882473">+62 813-8888-2473</a>
-              </p>
-            </div>
-          </div>
-
-          <div className="contact-item-row">
-            <div className="contact-icon-box">
-              <Globe />
-            </div>
-            <div>
-              <h4 style={{ fontWeight: 700, marginBottom: 4 }}>Website</h4>
-              <p style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)' }}>
-                <a href="https://www.outjourney.id" target="_blank" rel="noreferrer">
-                  www.outjourney.id
-                </a>
               </p>
             </div>
           </div>
@@ -89,7 +72,7 @@ export const ContactSection = () => {
         >
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="c-name">Nama Lengkap / Instansi Usaha</label>
+              <label htmlFor="c-name">Nama atau bisnis</label>
               <input
                 type="text"
                 id="c-name"
@@ -101,7 +84,7 @@ export const ContactSection = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="c-phone">Nomor Telepon / WhatsApp Aktif</label>
+              <label htmlFor="c-phone">Nomor WhatsApp</label>
               <input
                 type="tel"
                 id="c-phone"
@@ -113,31 +96,31 @@ export const ContactSection = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="c-subject">Perihal Pertanyaan</label>
+              <label htmlFor="c-subject">Topik</label>
               <input
                 type="text"
                 id="c-subject"
                 required
-                placeholder="Kebutuhan pasokan, paket menu, kerja sama..."
+                placeholder="Contoh: bahan pangan atau paket makan"
                 value={formData.subject}
                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="c-msg">Isi Pesan</label>
+              <label htmlFor="c-msg">Detail pesanan</label>
               <textarea
                 id="c-msg"
                 rows="3"
                 required
-                placeholder="Tuliskan detail kebutuhan pasokan atau pesan Anda"
+                placeholder="Tuliskan kebutuhan Anda"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               ></textarea>
             </div>
 
             <button type="submit" className="btn-form-submit">
-              <Send size={16} /> Kirim Pesan Resmi
+              <Send size={16} /> Kirim permintaan
             </button>
           </form>
         </motion.div>

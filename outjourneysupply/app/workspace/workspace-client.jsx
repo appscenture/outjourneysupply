@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabaseClient } from "../../lib/supabase/client";
+import CrmPanel from "./crm-panel";
 import {
   Activity,
   ArrowDownLeft,
@@ -18,6 +19,7 @@ import {
   CircleHelp,
   Clock3,
   CreditCard,
+  Download,
   FileText,
   Filter,
   LayoutDashboard,
@@ -27,6 +29,7 @@ import {
   Minus,
   MoreHorizontal,
   Package,
+  PackagePlus,
   Plus,
   QrCode,
   Search,
@@ -36,6 +39,7 @@ import {
   ShoppingBag,
   ShoppingCart,
   Truck,
+  Upload,
   Users,
   Wallet,
   X,
@@ -59,8 +63,9 @@ const initialOrders = [
 ];
 
 const navigation = [
-  { section: "Workspace", items: [{ id: "overview", label: "Overview", icon: LayoutDashboard }, { id: "catalog", label: "Quick order", icon: ShoppingBag, badge: "⌘ K" }, { id: "orders", label: "Purchase orders", icon: FileText, count: "3" }] },
-  { section: "Operations", items: [{ id: "inventory", label: "Inventory", icon: Package, count: "2" }, { id: "suppliers", label: "Suppliers", icon: Users }, { id: "payments", label: "Payments", icon: Wallet }, { id: "email", label: "Email & notifications", icon: Mail }] },
+  { section: "Workspace", items: [{ id: "overview", label: "Overview", icon: LayoutDashboard }, { id: "catalog", label: "Quick order", icon: ShoppingBag, badge: "⌘ K" }, { id: "products", label: "Product catalog", icon: PackagePlus }, { id: "orders", label: "Order history", icon: FileText }] },
+  { section: "Customer CRM", items: [{ id: "customers", label: "Customers", icon: Users }, { id: "purchase-orders", label: "PO reminders", icon: FileText }, { id: "rfqs", label: "RFQs", icon: Search }, { id: "invoices", label: "Invoices", icon: Wallet }] },
+  { section: "Operations", items: [{ id: "inventory", label: "Warehouse inventory", icon: Package }, { id: "suppliers", label: "Suppliers", icon: Users }, { id: "payments", label: "Payments", icon: Wallet }, { id: "email", label: "Email & notifications", icon: Mail }] },
   { section: "Point of sale", items: [{ id: "pos", label: "Counter POS", icon: CreditCard }] },
 ];
 
@@ -163,6 +168,10 @@ export default function WorkspaceClient({ userName = "Admin" }) {
   const [orders, setOrders] = useState(initialOrders);
   const [stock, setStock] = useState(initialStock);
   const [transactions, setTransactions] = useState([]);
+  const [managedProducts, setManagedProducts] = useState([]);
+  const [productDashboardLoading, setProductDashboardLoading] = useState(false);
+  const [productSearchSyncing, setProductSearchSyncing] = useState(false);
+  const [productError, setProductError] = useState("");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All items");
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -171,6 +180,7 @@ export default function WorkspaceClient({ userName = "Admin" }) {
   const [posMethod, setPosMethod] = useState("QRIS");
   const [toast, setToast] = useState("");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const productFileInputRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [smtpSettings, setSmtpSettings] = useState({
     host: "mail.outjourney.id",
@@ -254,10 +264,91 @@ export default function WorkspaceClient({ userName = "Admin" }) {
     const matchesSearch = `${product.name} ${product.localName} ${product.category}`.toLowerCase().includes(query.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+  const loadManagedProducts = async () => {
+    setProductDashboardLoading(true);
+    setProductError("");
+    try {
+      const response = await fetch("/api/products", { cache: "no-store" });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not load products.");
+      setManagedProducts(result.products);
+    } catch (error) {
+      console.error("Could not load the product dashboard.", error);
+      setProductError(error instanceof Error ? error.message : "Could not load products.");
+    } finally {
+      setProductDashboardLoading(false);
+    }
+  };
   const setPage = (page) => {
     setActivePage(page);
     setMobileNavOpen(false);
+    if (page === "products") void loadManagedProducts();
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const handleProductImport = async (event) => {
+    const input = event.currentTarget;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    setProductError("");
+    try {
+      const formData = new FormData();
+      formData.set("resource", "products");
+      formData.set("file", file);
+      const response = await fetch("/api/crm", {
+        method: "POST",
+        body: formData,
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not import products.");
+
+      const productsResponse = await fetch("/api/products", { cache: "no-store" });
+      const productsResult = await productsResponse.json();
+      if (!productsResponse.ok) throw new Error(productsResult.error || "Products imported, but the catalog could not be refreshed.");
+      setManagedProducts(productsResult.products);
+      setToast(result.searchIndexed
+        ? `${result.imported} products imported and search synced`
+        : `${result.imported} products imported. Configure Algolia to sync hosted search.`);
+    } catch (error) {
+      console.error("Could not import the product catalog.", error);
+      setProductError(error instanceof Error ? error.message : "Could not import products.");
+    } finally {
+      input.value = "";
+    }
+  };
+  const handleProductExport = async (format) => {
+    setProductError("");
+    try {
+      const response = await fetch(`/api/crm?resource=products&format=${format}`, { cache: "no-store" });
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.error || "Could not export products.");
+      }
+      const url = URL.createObjectURL(await response.blob());
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `outjourney-products.${format}`;
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 0);
+    } catch (error) {
+      console.error("Could not export the product catalog.", error);
+      setProductError(error instanceof Error ? error.message : "Could not export products.");
+    }
+  };
+  const handleProductSearchSync = async () => {
+    setProductSearchSyncing(true);
+    setProductError("");
+    try {
+      const response = await fetch("/api/products", { method: "PUT" });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not sync product search.");
+      setToast(`${result.indexed} products synced to search`);
+    } catch (error) {
+      console.error("Could not sync product search.", error);
+      setProductError(error instanceof Error ? error.message : "Could not sync product search.");
+    } finally {
+      setProductSearchSyncing(false);
+    }
   };
   const saveEmailSettings = () => {
     try {
@@ -318,7 +409,7 @@ export default function WorkspaceClient({ userName = "Admin" }) {
       <aside className={`sidebar ${mobileNavOpen ? "sidebar-open" : ""}`}>
         <div className="sidebar-top"><Brand /><button className="icon-button close-mobile" onClick={() => setMobileNavOpen(false)} aria-label="Close menu"><X size={19} /></button></div>
         <button className="workspace-switcher">
-          <div className="workspace-avatar">DB</div><div className="workspace-copy"><strong>Dapur Bumi</strong><span>Business workspace</span></div><ChevronDown size={16} />
+          <div className="workspace-avatar">OJ</div><div className="workspace-copy"><strong>Outjourney</strong><span>Admin workspace</span></div><ChevronDown size={16} />
         </button>
         <div className="sidebar-navigation">
           {navigation.map((group) => <div className="nav-group" key={group.section}><div className="nav-heading">{group.section}</div>{group.items.map(({ id, label, icon: Icon, count, badge }) => (
@@ -336,7 +427,7 @@ export default function WorkspaceClient({ userName = "Admin" }) {
         <header className="topbar">
           <button className="icon-button mobile-menu" onClick={() => setMobileNavOpen(true)} aria-label="Open navigation"><Menu size={20} /></button>
           <div className="breadcrumb"><span>Workspace</span><ChevronRight size={14} /><strong>{navigation.flatMap((group) => group.items).find((item) => item.id === activePage)?.label || "Overview"}</strong></div>
-          <div className="topbar-actions"><div className="demo-label"><span /> Demo workspace</div><button className="icon-button notification-button" aria-label="Notifications" onClick={() => setToast("You’re all caught up")}><Bell size={18} /><i /></button><div className="topbar-divider" /><div className="topbar-date"><Clock3 size={15} /> Bekasi · WIB</div></div>
+          <div className="topbar-actions"><div className="demo-label"><span /> PT Outjourney · CRM</div><button className="icon-button notification-button" aria-label="Notifications" onClick={() => setToast("You’re all caught up")}><Bell size={18} /><i /></button><div className="topbar-divider" /><div className="topbar-date"><Clock3 size={15} /> Bekasi · WIB</div></div>
         </header>
 
         <div className="page-content">
@@ -372,6 +463,60 @@ export default function WorkspaceClient({ userName = "Admin" }) {
             </>
           )}
 
+          {activePage === "products" && <>
+            <SectionTitle
+              eyebrow="STOREFRONT"
+              title="Product catalog"
+              description="Import and export products for the customer catalog."
+              action={<div className="product-admin-actions">
+                <input
+                  ref={productFileInputRef}
+                  type="file"
+                  accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                  onChange={handleProductImport}
+                  hidden
+                />
+                <button className="button button-outline" onClick={() => productFileInputRef.current?.click()}>
+                  <Upload size={16} /> Import Excel/CSV
+                </button>
+                <button className="button button-outline" onClick={handleProductSearchSync} disabled={productSearchSyncing}>
+                  <Search size={16} /> {productSearchSyncing ? "Syncing..." : "Sync search"}
+                </button>
+                <button className="button button-outline" onClick={() => void handleProductExport("xlsx")}>
+                  <Download size={16} /> Export XLSX
+                </button>
+                <button className="button button-dark" onClick={() => void handleProductExport("csv")}>
+                  <Download size={16} /> Export CSV
+                </button>
+              </div>}
+            />
+            {productError && <div className="product-admin-error" role="alert">{productError}</div>}
+            <section className="content-card page-table-card product-admin-card">
+              <div className="card-heading">
+                <div><div className="eyebrow">PRODUCTS</div><h2>{managedProducts.length} items</h2></div>
+                <span className="table-count">CSV columns: SKU, name, category, unit, price_idr</span>
+              </div>
+              {productDashboardLoading ? <div className="empty-sales">Loading products...</div> : managedProducts.length ? (
+                <div className="table-scroll">
+                  <table className="data-table">
+                    <thead><tr><th>Product</th><th>Category</th><th>Unit</th><th>Price</th><th>Storefront</th></tr></thead>
+                    <tbody>{managedProducts.map((product) => (
+                      <tr key={product.id}>
+                        <td><div className="inventory-product"><span><strong>{product.name}</strong><small>{product.sku}</small></span></div></td>
+                        <td>{product.category}</td>
+                        <td>{product.unit}</td>
+                        <td>{product.price_idr > 0 ? money(product.price_idr) : "Set price"}</td>
+                        <td><StatusPill>{product.is_active ? "Active" : "Hidden"}</StatusPill></td>
+                      </tr>
+                    ))}</tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="empty-sales">No products found. Import a CSV to add products to the storefront.</div>
+              )}
+            </section>
+          </>}
+
           {activePage === "catalog" && (
             <>
               <SectionTitle eyebrow="ORDERING" title="What does your kitchen need?" description="One simple order, coordinated with your delivery schedule." action={<div className="delivery-cutoff"><Clock3 size={15} /><span>Order by <strong>2:00 PM</strong> for the next available route</span></div>} />
@@ -405,19 +550,11 @@ export default function WorkspaceClient({ userName = "Admin" }) {
             <div className="info-banner"><CircleHelp size={17} /><span>Need to update an order? Orders can be edited before they enter cold-chain preparation.</span><button onClick={() => setToast("Contact your Outjourney account manager to update a submitted order.")}>Get help</button></div>
           </>}
 
-          {activePage === "inventory" && <>
-            <SectionTitle eyebrow="STOCK CONTROL" title="Know what’s in your kitchen." description="A clear count today helps you plan the next delivery before you run out." action={<button className="button button-outline" onClick={() => setToast("Stock count saved for this demo workspace")}><Check size={16} /> Complete stock count</button>} />
-            <div className="inventory-hero"><div><span className="inventory-icon"><Package size={19} /></span><div><strong>{lowStockCount} items need attention</strong><p>Based on your current stock and average daily usage.</p></div></div><button onClick={() => setPage("catalog")}>Restock items <ArrowRight size={15} /></button></div>
-            <section className="content-card page-table-card inventory-table-card"><div className="card-heading"><div><div className="eyebrow">LIVE STOCK OVERVIEW</div><h2>Product inventory <span className="table-count">{products.length} SKUs</span></h2></div><button className="button button-outline button-small"><Filter size={14} /> All categories</button></div>
-              <div className="table-scroll"><table className="data-table inventory-table"><thead><tr><th>Product</th><th>On hand</th><th>Avg. daily use</th><th>Stock coverage</th><th>Stock health</th><th /></tr></thead><tbody>{products.map((product) => {
-                const count = stock[product.id] ?? product.stock;
-                const days = Math.floor(count / product.daily);
-                const health = days <= 2 ? "Restock now" : days <= 4 ? "Restock soon" : "On track";
-                return <tr key={product.id}><td><div className="inventory-product"><img src={product.image} alt="" /><span><strong>{product.name}</strong><small>{product.category} · {product.unit}</small></span></div></td><td><strong>{count}</strong> packs</td><td>{product.daily} packs</td><td><div className="coverage-cell"><div className="coverage-track"><span className={days <= 2 ? "coverage-low" : days <= 4 ? "coverage-mid" : ""} style={{ width: `${Math.min(days / 10 * 100, 100)}%` }} /></div><span>{days} days</span></div></td><td><StatusPill>{health}</StatusPill></td><td><button className="button button-outline button-small restock-button" onClick={() => { addItem(product); setPage("catalog"); }}>Restock <Plus size={13} /></button></td></tr>;
-              })}</tbody></table></div>
-            </section>
-            <div className="info-banner"><Activity size={17} /><span>Stock coverage is an estimate based on sample daily usage. Update it with your actual kitchen counts.</span><button onClick={() => setToast("Inventory settings are coming soon")}>How it works</button></div>
-          </>}
+          {activePage === "inventory" && <CrmPanel resource="inventory" onToast={setToast} />}
+          {activePage === "customers" && <CrmPanel resource="customers" onToast={setToast} />}
+          {activePage === "purchase-orders" && <CrmPanel resource="purchase-orders" onToast={setToast} />}
+          {activePage === "rfqs" && <CrmPanel resource="rfqs" onToast={setToast} />}
+          {activePage === "invoices" && <CrmPanel resource="invoices" onToast={setToast} />}
 
           {activePage === "suppliers" && <>
             <SectionTitle eyebrow="SUPPLIER NETWORK" title="Suppliers, all in one place." description="Keep product sourcing, lead times, and delivery terms close to your purchasing workflow." action={<button className="button button-dark" onClick={() => setToast("Supplier onboarding is coming soon")}><Plus size={17} /> Add supplier</button>} />
@@ -472,14 +609,6 @@ export default function WorkspaceClient({ userName = "Admin" }) {
         </div>
         <footer className="app-footer"><span>© 2026 Outjourney · Food service, moving forward.</span><span><span className="online-dot" /> All systems operational <span className="footer-divider">·</span> Demo environment</span></footer>
       </main>
-
-      <nav className="mobile-bottom-nav" aria-label="Workspace navigation">
-        <button className={activePage === "overview" ? "active" : ""} onClick={() => setPage("overview")}><LayoutDashboard size={20} /><span>Home</span></button>
-        <button className={activePage === "catalog" ? "active" : ""} onClick={() => setPage("catalog")}><ShoppingBag size={20} /><span>Catalog</span></button>
-        <button className={activePage === "orders" ? "active" : ""} onClick={() => setPage("orders")}><FileText size={20} /><span>Orders</span></button>
-        <button className={activePage === "inventory" ? "active" : ""} onClick={() => setPage("inventory")}><Package size={20} /><span>Stock</span></button>
-        <button onClick={handleSignOut}><LogOut size={20} /><span>Account</span></button>
-      </nav>
 
       {checkoutOpen && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCheckoutOpen(false); }}><section className="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title"><div className="modal-top"><span className="modal-icon"><FileText size={18} /></span><button className="icon-button" onClick={() => setCheckoutOpen(false)} aria-label="Close checkout"><X size={19} /></button></div><div className="eyebrow">PURCHASE ORDER · {cartCount} ITEMS</div><h2 id="checkout-title">Everything ready?</h2><p className="modal-subtitle">Review your delivery and payment preference before sending this order.</p><div className="checkout-detail-row"><span><Truck size={16} /> Delivery estimate</span><strong>{daysUntilDelivery()} · 08:00–12:00</strong></div><div className="checkout-delivery-note"><Clock3 size={15} /><span>Estimated for Bekasi cold-chain route. Final timing is confirmed by your supplier.</span></div><div className="checkout-method-label">Payment preference</div><div className="checkout-methods"><button className={paymentMethod === "QRIS" ? "checkout-method selected" : "checkout-method"} onClick={() => setPaymentMethod("QRIS")}><span className="method-radio" /><QrCode size={18} /><span><strong>QRIS</strong><small>Payment preview · not connected</small></span></button><button className={paymentMethod === "Invoice" ? "checkout-method selected" : "checkout-method"} onClick={() => setPaymentMethod("Invoice")}><span className="method-radio" /><FileText size={18} /><span><strong>Invoice</strong><small>Terms set by your supplier</small></span></button></div><div className="checkout-final-total"><span>Estimated order total</span><strong>{money(cartTotal)}</strong></div><button className="button button-dark checkout-submit" onClick={createPurchaseOrder}>Place purchase order <ArrowRight size={16} /></button><p className="checkout-legal"><ShieldCheck size={13} /> Demo order · no payment or supplier notification is sent</p></section></div>}
 

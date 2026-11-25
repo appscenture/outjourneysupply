@@ -203,11 +203,10 @@ export default function LoginPage() {
           {googleLoading ? "Connecting to Google..." : "Continue with Google"}
         </button>
 
-        <div className="login-divider"><span>choose workspace</span></div>
-        <Link className="login-client-button" href="/client/login">
+        <div className="login-divider"><span>client access</span></div>
+        <Link className="login-google-button login-client-button" href="/client/login">
           <Users size={17} />
           Client login
-          <ArrowRight size={17} />
         </Link>
 
         <div className="login-security-note">

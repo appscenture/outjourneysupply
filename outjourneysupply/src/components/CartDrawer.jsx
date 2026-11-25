@@ -128,33 +128,33 @@ export const CartDrawer = () => {
                   <span className="cart-total-val">{formatRupiah(totalPrice)}</span>
                 </div>
 
-                <form onSubmit={handleCheckout}>
+                <form className="checkout-order-form" onSubmit={handleCheckout}>
                   <div className="checkout-input-group">
-                    <label htmlFor="chk-name">Nama Pemesan / Badan Usaha</label>
+                    <label htmlFor="chk-name">Nama pemesan</label>
                     <input
                       type="text"
                       id="chk-name"
                       required
-                      placeholder="Nama Anda atau Usaha"
+                      placeholder="Nama Anda atau bisnis"
                       value={customer.name}
                       onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
                     />
                   </div>
 
                   <div className="checkout-input-group">
-                    <label htmlFor="chk-phone">Nomor Telepon / WhatsApp</label>
+                    <label htmlFor="chk-phone">Nomor WhatsApp</label>
                     <input
                       type="tel"
                       id="chk-phone"
                       required
-                      placeholder="Contoh: 08123456789"
+                      placeholder="Nomor yang bisa dihubungi"
                       value={customer.phone}
                       onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
                     />
                   </div>
 
                   <div className="checkout-input-group">
-                    <label htmlFor="chk-address">Alamat Pengiriman &amp; Kota Tujuan</label>
+                    <label htmlFor="chk-address">Alamat pengiriman</label>
                     <textarea
                       id="chk-address"
                       rows="2"
@@ -166,7 +166,7 @@ export const CartDrawer = () => {
                   </div>
 
                   <div className="checkout-input-group">
-                    <label htmlFor="chk-notes">Catatan Khusus (Opsional)</label>
+                    <label htmlFor="chk-notes">Catatan (opsional)</label>
                     <input
                       type="text"
                       id="chk-notes"
@@ -181,7 +181,7 @@ export const CartDrawer = () => {
                     className="btn-checkout"
                     disabled={!isFormValid}
                   >
-                    <Send size={16} /> Kirim Pesanan Resmi via WhatsApp
+                    <Send size={16} /> Kirim pesanan via WhatsApp
                   </button>
                 </form>
               </div>

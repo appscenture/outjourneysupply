@@ -1,9 +1,8 @@
 "use client";
 
-import React from 'react';
-import { CartProvider, useCart } from './context/CartContext';
-import { TopBar } from './components/TopBar';
-import { Navbar } from './components/Navbar';
+import React, { useState } from 'react';
+import { useCart } from './context/CartContext';
+import { Navbar, StoreBottomNav } from './components/Navbar';
 import { HeroFilm } from './components/HeroFilm';
 import { CompanyProfile } from './components/CompanyProfile';
 import { StandardsLab } from './components/StandardsLab';
@@ -12,10 +11,10 @@ import { Partnership } from './components/Partnership';
 import { ContactSection } from './components/ContactSection';
 import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
-import { WhatsAppWidget } from './components/WhatsAppWidget';
 
 const AppContent = () => {
   const { toastVisible, toastMessage } = useCart();
+  const [productQuery, setProductQuery] = useState('');
 
   const handleSearchFocus = () => {
     const el = document.getElementById('products');
@@ -28,21 +27,29 @@ const AppContent = () => {
     }
   };
 
+  const handleSearchSubmit = (query) => {
+    setProductQuery(query);
+    handleSearchFocus();
+  };
+
   return (
     <div className="app-root">
-      <TopBar />
-      <Navbar onSearchClick={handleSearchFocus} />
+      <Navbar
+        searchValue={productQuery}
+        onSearchChange={setProductQuery}
+        onSearchSubmit={handleSearchSubmit}
+      />
       <main>
         <HeroFilm />
         <CompanyProfile />
         <StandardsLab />
-        <ProductCatalog />
+        <ProductCatalog searchQuery={productQuery} onSearchChange={setProductQuery} showCartButton={false} />
         <Partnership />
         <ContactSection />
       </main>
       <Footer />
+      <StoreBottomNav />
 
-      <WhatsAppWidget />
       <CartDrawer />
       {toastVisible && (
         <div className="site-toast">
@@ -54,9 +61,5 @@ const AppContent = () => {
 };
 
 export default function App() {
-  return (
-    <CartProvider>
-      <AppContent />
-    </CartProvider>
-  );
+  return <AppContent />;
 }

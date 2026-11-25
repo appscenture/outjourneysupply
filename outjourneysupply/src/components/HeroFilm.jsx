@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { filmSlides } from '../data/slides';
 
 export const HeroFilm = () => {
@@ -9,24 +9,16 @@ export const HeroFilm = () => {
     <header className="hero-section" id="home">
       <div className="hero-layout">
         <div className="hero-copy">
-          <span className="hero-eyebrow">Food Supply &amp; Business Solutions</span>
+          <span className="hero-eyebrow">Outjourney food supply</span>
           <h1>
-            Food supply untuk bisnis yang <em>terus bergerak.</em>
+            Kebutuhan dapur bisnis, <em>lebih mudah.</em>
           </h1>
           <p>
-            Pasokan bahan pangan, paket menu harian, dan kebutuhan bisnis dalam
-            satu solusi yang praktis dan dapat diandalkan.
+            Belanja produk pilihan, pesan paket makan, dan kelola pesanan dalam satu tempat.
           </p>
           <div className="hero-actions">
-            <a
-              href="https://ik.imagekit.io/p9bj7nsf9/Company%20Profile%20Outjourney%202026%20Industry%20(1).pdf?ik-attachment=true"
-              className="hero-primary-cta"
-              download="Company-Profile-Outjourney-2026.pdf"
-            >
-              <Download size={18} /> Company Profile
-            </a>
-            <a href="/workspace" className="hero-secondary-cta">
-              Buka Workspace Pemesanan <ArrowUpRight size={18} />
+            <a href="/products" className="hero-primary-cta">
+              Belanja katalog <ArrowRight size={18} />
             </a>
           </div>
         </div>
