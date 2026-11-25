@@ -81,6 +81,25 @@ export default function LoginPage() {
     setErrorMessage("");
     setGoogleLoading(true);
     try {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+      if (!supabaseUrl || !publishableKey) {
+        throw new Error("Supabase is not configured for Google sign-in.");
+      }
+
+      const settingsResponse = await fetch(`${supabaseUrl}/auth/v1/settings`, {
+        headers: { apikey: publishableKey },
+      });
+      if (!settingsResponse.ok) {
+        throw new Error(`Could not check Google provider settings (${settingsResponse.status}).`);
+      }
+
+      const settings = await settingsResponse.json();
+      if (settings.external?.google !== true) {
+        setErrorMessage("Google sign-in is disabled in Supabase Auth. Enable the Google provider and configure its OAuth credentials.");
+        return;
+      }
+
       const { data, error } = await getSupabaseClient().auth.signInWithOAuth({
         provider: "google",
         options: {

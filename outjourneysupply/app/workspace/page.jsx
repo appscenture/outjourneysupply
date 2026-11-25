@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "../../lib/supabase/server";
 import WorkspaceClient from "./workspace-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function WorkspacePage() {
   const adminEmail = process.env.NEXT_PUBLIC_ADMIN_LOGIN_EMAIL;
   if (!adminEmail) {
