@@ -48,3 +48,9 @@ RLS is enabled on every application table. Organization roles govern purchasing,
 Indexes cover tenant/order status and date filters, supplier fulfillment queues, location inventory, catalog categories and supplier listings, order/receipt history, POS activity, payments, and stock movement history. The `pos_sale_totals` and `purchase_order_receipt_totals` views use invoker security so their results remain subject to the caller's RLS access.
 
 The seed file contains development-only fictional suppliers and products. TypeScript database types are not generated because this project currently uses JavaScript.
+
+## Client signup protection and recovery
+
+Client sign-up is protected with Cloudflare Turnstile when configured. Create a free Turnstile widget for the production domain, set its public site key as `NEXT_PUBLIC_SUPABASE_CAPTCHA_SITE_KEY` in Vercel, and enable CAPTCHA in Supabase Auth's bot and abuse protection settings using the Turnstile secret. Never put the secret in a `NEXT_PUBLIC_` variable, source file, or chat. Client registration stays disabled until the public site key is configured; sign-in remains available. Do not enable Supabase CAPTCHA before the site key is deployed, or existing sign-ins may be rejected.
+
+Supabase Free projects do not include managed daily database backups. Regularly export production data with the Supabase CLI and keep an encrypted copy outside the repository and separate from the Supabase account. Verify that a backup can be restored; database backups do not include Storage file objects.

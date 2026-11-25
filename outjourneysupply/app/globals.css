@@ -579,6 +579,8 @@ h1, h2, h3, p { margin-top: 0; }
 .login-password-toggle { position: absolute; top: 0; right: 0; display: grid; width: 44px; height: 48px; place-items: center; border: 0; color: #7d8795; background: transparent; cursor: pointer; }
 .login-password-toggle:hover { color: #004aad; }
 .login-error { margin: -5px 0 0; color: #b42332; font-size: 13px; line-height: 1.5; }
+.login-captcha { display: flex; justify-content: center; overflow-x: auto; }
+.login-captcha-note { margin: -5px 0 0; color: #647084; font-size: 12px; line-height: 1.5; }
 .login-submit { display: flex; min-height: 48px; align-items: center; justify-content: center; gap: 9px; margin-top: 3px; border: 0; border-radius: 10px; color: #fff; background: #004aad; cursor: pointer; font: inherit; font-size: 14px; font-weight: 600; transition: background .16s ease; }
 .login-submit:hover:not(:disabled) { background: #003b8d; }
 .login-submit:disabled { cursor: wait; opacity: .7; }

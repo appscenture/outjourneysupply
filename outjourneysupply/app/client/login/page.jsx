@@ -5,7 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Eye, EyeOff, LockKeyhole } from "lucide-react";
+import { Turnstile } from "@marsidev/react-turnstile";
 import { getSupabaseClient } from "../../../lib/supabase/client";
+
+const captchaSiteKey = process.env.NEXT_PUBLIC_SUPABASE_CAPTCHA_SITE_KEY;
 
 export default function ClientLoginPage() {
   const router = useRouter();
@@ -16,6 +19,15 @@ export default function ClientLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaResetKey, setCaptchaResetKey] = useState(0);
+
+  const changeMode = (nextMode) => {
+    setMode(nextMode);
+    setErrorMessage("");
+    setCaptchaToken("");
+    setCaptchaResetKey((key) => key + 1);
+  };
 
   return (
     <main className="login-shell">
@@ -28,8 +40,8 @@ export default function ClientLoginPage() {
         <p className="login-description">{mode === "login" ? "Orders, invoices, delivery tracking." : "Register for Outjourney client access."}</p>
 
         <div className="login-mode-switch" aria-label="Client account mode">
-          <button type="button" className={mode === "login" ? "active" : ""} onClick={() => { setMode("login"); setErrorMessage(""); }}>Sign in</button>
-          <button type="button" className={mode === "register" ? "active" : ""} onClick={() => { setMode("register"); setErrorMessage(""); }}>Register</button>
+          <button type="button" className={mode === "login" ? "active" : ""} onClick={() => changeMode("login")}>Sign in</button>
+          <button type="button" className={mode === "register" ? "active" : ""} onClick={() => changeMode("register")}>Register</button>
         </div>
 
         <form className="login-form" onSubmit={async (event) => {
@@ -37,6 +49,15 @@ export default function ClientLoginPage() {
           setErrorMessage("");
           setLoading(true);
           try {
+            if (mode === "register" && !captchaSiteKey) {
+              setErrorMessage("Registration is unavailable until bot protection is configured.");
+              return;
+            }
+            if (captchaSiteKey && !captchaToken) {
+              setErrorMessage("Complete the security check before continuing.");
+              return;
+            }
+
             const supabase = getSupabaseClient();
             if (mode === "register") {
               const { data, error } = await supabase.auth.signUp({
@@ -45,6 +66,7 @@ export default function ClientLoginPage() {
                 options: {
                   data: { full_name: name },
                   emailRedirectTo: `${window.location.origin}/client`,
+                  captchaToken: captchaToken || undefined,
                 },
               });
               if (error) {
@@ -58,7 +80,11 @@ export default function ClientLoginPage() {
                 setErrorMessage("Account created. Check your email to confirm your account before signing in.");
               }
             } else {
-              const { error } = await supabase.auth.signInWithPassword({ email, password });
+              const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+                options: { captchaToken: captchaToken || undefined },
+              });
               if (error) {
                 setErrorMessage("Email or password is incorrect.");
                 return;
@@ -71,6 +97,8 @@ export default function ClientLoginPage() {
             setErrorMessage("Sign-in is temporarily unavailable.");
           } finally {
             setLoading(false);
+            setCaptchaToken("");
+            setCaptchaResetKey((key) => key + 1);
           }
         }}>
           {mode === "register" && (
@@ -92,8 +120,32 @@ export default function ClientLoginPage() {
               </button>
             </div>
           </div>
+          {captchaSiteKey ? (
+            <div className="login-captcha">
+              <Turnstile
+                key={captchaResetKey}
+                siteKey={captchaSiteKey}
+                onSuccess={setCaptchaToken}
+                onExpire={() => setCaptchaToken("")}
+                onError={() => {
+                  setCaptchaToken("");
+                  setErrorMessage("Security verification could not load. Please try again.");
+                }}
+              />
+            </div>
+          ) : mode === "register" ? (
+            <p className="login-captcha-note" role="status">
+              Registration will be available after bot protection is configured.
+            </p>
+          ) : null}
           {errorMessage && <p className="login-error" role="alert">{errorMessage}</p>}
-          <button className="login-submit" type="submit" disabled={loading}>{loading ? "Signing in..." : "Open client portal"}{!loading && <ArrowRight size={17} />}</button>
+          <button
+            className="login-submit"
+            type="submit"
+            disabled={loading || (mode === "register" && !captchaSiteKey) || (Boolean(captchaSiteKey) && !captchaToken)}
+          >
+            {loading ? "Signing in..." : "Open client portal"}{!loading && <ArrowRight size={17} />}
+          </button>
         </form>
 
         <div className="login-security-note"><LockKeyhole size={15} /><span>Secure client access</span></div>
