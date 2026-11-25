@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowUpRight, Plus } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { formatRupiah } from "../data/products";
 import { getSupabaseClient } from "../../lib/supabase/client";
+import { ProductImage } from "./ProductImage";
 import { Navbar, StoreBottomNav } from "./Navbar";
 import { CartDrawer } from "./CartDrawer";
 import { Footer } from "./Footer";
@@ -93,7 +94,7 @@ export default function ProductDetail({ sku }) {
         ) : product ? (
           <article className="product-detail-card">
             <div className="product-detail-image">
-              {product.img ? <img src={product.img} alt={product.name} /> : <span>Produk Outjourney</span>}
+              <ProductImage product={product} src={product.img} alt={product.name} loading="eager" />
             </div>
             <div className="product-detail-info">
               <span className="store-product-category">{product.category}</span>

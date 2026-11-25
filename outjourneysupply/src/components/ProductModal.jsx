@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Check } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { formatRupiah } from '../data/products';
+import { ProductImage } from './ProductImage';
 
 export const ProductModal = ({ product, onClose }) => {
   const { addItem } = useCart();
@@ -36,7 +37,7 @@ export const ProductModal = ({ product, onClose }) => {
           </button>
 
           <div className="modal-img-box">
-            <img src={product.img} alt={product.name} />
+            <ProductImage product={product} src={product.img} alt={product.name} />
           </div>
 
           <div className="modal-content-box">

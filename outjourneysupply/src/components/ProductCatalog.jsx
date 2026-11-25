@@ -6,6 +6,7 @@ import { foodSupplyCategories, foodSupplyWhatsApp, mealPackages } from '../data/
 import { formatRupiah } from '../data/products';
 import { getSupabaseClient } from '../../lib/supabase/client';
 import { getAlgoliaSearchConfig } from '../lib/algolia';
+import { ProductImage } from './ProductImage';
 
 const foodSupplyItems = foodSupplyCategories.flatMap((category) =>
   category.items.map((item) => ({ category: category.name, item }))
@@ -254,11 +255,7 @@ export const ProductCatalog = ({ searchQuery, onSearchChange, showCartButton = t
               return (
                 <article className="store-product-card" key={product.id}>
                   <div className="store-product-image">
-                    {product.img ? (
-                      <img src={product.img} alt={product.name} loading="lazy" />
-                    ) : (
-                      <span className="store-product-no-image">No image</span>
-                    )}
+                    <ProductImage product={product} src={product.img} alt={product.name} />
                     {product.isBestSeller && <span className="store-product-tag">Favorit</span>}
                   </div>
                   <div className="store-product-info">
