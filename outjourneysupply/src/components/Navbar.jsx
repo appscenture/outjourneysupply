@@ -21,13 +21,10 @@ export const Navbar = ({ onSearchClick }) => {
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <a href="#home" className="navbar-brand">
         <img
-          src="https://ik.imagekit.io/p9bj7nsf9/1.png"
+          src="/img/outjourney-logo-wide.png"
           alt="Outjourney Logo"
           className="brand-logo"
         />
-        <span className="brand-name">
-          <em>Outjourney</em>
-        </span>
       </a>
 
       <div className={`navbar-nav ${isMobileOpen ? 'open' : ''}`}>
@@ -63,8 +60,8 @@ export const Navbar = ({ onSearchClick }) => {
           )}
         </button>
 
-        <a href="#partnership" className="btn-nav-cta">
-          <Briefcase /> Food Supply
+        <a href="/workspace" className="btn-nav-cta">
+          <Briefcase /> B2B Workspace
         </a>
 
         <button

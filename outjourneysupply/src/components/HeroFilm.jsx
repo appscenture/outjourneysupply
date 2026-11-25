@@ -25,8 +25,8 @@ export const HeroFilm = () => {
             >
               <Download size={18} /> Company Profile
             </a>
-            <a href="#products" className="hero-secondary-cta">
-              Lihat Food Supply <ArrowUpRight size={18} />
+            <a href="/workspace" className="hero-secondary-cta">
+              Buka Workspace Pemesanan <ArrowUpRight size={18} />
             </a>
           </div>
         </div>

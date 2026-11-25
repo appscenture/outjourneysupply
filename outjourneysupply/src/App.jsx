@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { CartProvider, useCart } from './context/CartContext';
 import { TopBar } from './components/TopBar';
