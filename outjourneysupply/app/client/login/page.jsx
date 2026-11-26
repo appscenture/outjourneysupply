@@ -96,7 +96,7 @@ export default function ClientLoginPage() {
                   data.user.email.toLowerCase() === adminEmail.toLowerCase(),
               );
               if (isAdmin) {
-                window.location.replace("https://www.outjourney.id/workspace");
+                window.location.replace("/workspace");
               } else {
                 router.replace("/client");
                 router.refresh();

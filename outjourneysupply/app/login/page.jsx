@@ -65,7 +65,7 @@ export default function LoginPage() {
         return;
       }
 
-      window.location.replace("https://www.outjourney.id/workspace");
+      window.location.replace("/workspace");
     } catch (error) {
       console.error("Outjourney sign-in failed.", error);
       setErrorMessage("Sign-in is temporarily unavailable. Please try again.");

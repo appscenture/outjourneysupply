@@ -17,5 +17,5 @@ export async function GET(request) {
     return NextResponse.redirect(new URL("/login?google=error", url.origin));
   }
 
-  return NextResponse.redirect(new URL("https://www.outjourney.id/workspace"));
+  return NextResponse.redirect(new URL("/workspace", url.origin));
 }
