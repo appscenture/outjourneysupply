@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Download, FileSpreadsheet, Plus, Search, Send, Upload, X } from "lucide-react";
+import { Download, Plus, Search, Send, Upload, X } from "lucide-react";
 
 const PANELS = {
   customers: {
@@ -154,6 +154,26 @@ export default function CrmPanel({ resource, onToast }) {
     }
   };
 
+  const downloadPdf = async (record) => {
+    setError("");
+    try {
+      const response = await fetch(`/api/crm/pdf?resource=${resource}&id=${encodeURIComponent(record.id)}`, { cache: "no-store" });
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.error || "Could not generate the PDF.");
+      }
+      const url = URL.createObjectURL(await response.blob());
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `outjourney-${resource}-${record.id}.pdf`;
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (pdfError) {
+      console.error("Could not download the CRM PDF.", pdfError);
+      setError(pdfError instanceof Error ? pdfError.message : "Could not generate the PDF.");
+    }
+  };
+
   const handleImport = async (event) => {
     const input = event.currentTarget;
     const file = input.files?.[0];
@@ -274,9 +294,8 @@ export default function CrmPanel({ resource, onToast }) {
         <div className="crm-actions">
           <input ref={importRef} type="file" accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onChange={handleImport} hidden />
           {config.action && <button className="button button-dark" onClick={openNewRecord}><Plus size={16} /> {config.action}</button>}
-          <button className="button button-outline" onClick={() => importRef.current?.click()}><Upload size={15} /> Import Excel/CSV</button>
-          <button className="button button-outline button-small" onClick={() => void download("xlsx")}><FileSpreadsheet size={15} /> XLSX</button>
-          <button className="button button-outline button-small" onClick={() => void download("csv")}><Download size={15} /> CSV</button>
+          <button className="button button-outline" onClick={() => importRef.current?.click()}><Upload size={15} /> Import</button>
+          <button className="button button-outline" onClick={() => void download("xlsx")}><Download size={15} /> Export</button>
         </div>
       </div>
 
@@ -289,12 +308,15 @@ export default function CrmPanel({ resource, onToast }) {
         {loading ? <div className="empty-sales">Loading CRM records...</div> : !filteredRecords.length ? (
           <div className="empty-sales">No records yet. Add a record or import an Excel/CSV file.</div>
         ) : resource === "customers" ? (
-          <div className="table-scroll"><table className="data-table"><thead><tr><th>Business</th><th>Contact</th><th>Email</th><th>WhatsApp</th><th>Status</th><th /></tr></thead><tbody>
+          <div className="table-scroll"><table className="data-table"><thead><tr><th>Business</th><th>Contact</th><th>Email</th><th>WhatsApp</th><th>Status</th><th>Actions</th></tr></thead><tbody>
             {filteredRecords.map((customer) => <tr key={customer.id}>
               <td><strong>{customer.name}</strong><span className="table-sub">{customer.slug}</span></td>
               <td>{customer.contact_name || "—"}</td><td>{customer.email || "—"}</td><td>{customer.whatsapp_phone || "—"}</td>
               <td><Status>{customer.status}</Status></td>
-              <td><button className="button button-outline button-small" onClick={() => openCustomerEdit(customer)}>Edit</button></td>
+              <td><div className="crm-row-actions">
+                <button className="button button-outline button-small" onClick={() => openCustomerEdit(customer)}>Edit</button>
+                <button className="button button-outline button-small" onClick={() => void downloadPdf(customer)}><Download size={13} /> PDF</button>
+              </div></td>
             </tr>)}
           </tbody></table></div>
         ) : resource === "inventory" ? (
@@ -310,7 +332,7 @@ export default function CrmPanel({ resource, onToast }) {
             })}
           </tbody></table></div>
         ) : (
-          <div className="table-scroll"><table className="data-table"><thead><tr><th>Document</th><th>Customer</th><th>Issued</th><th>Due</th><th>Amount</th><th>Status</th><th>Reminder</th></tr></thead><tbody>
+          <div className="table-scroll"><table className="data-table"><thead><tr><th>Document</th><th>Customer</th><th>Issued</th><th>Due</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead><tbody>
             {filteredRecords.map((record) => {
               const reminder = whatsappUrl(record);
               return <tr key={record.id}>
@@ -319,7 +341,10 @@ export default function CrmPanel({ resource, onToast }) {
                 <td>{dateLabel(record.issued_at)}</td><td>{dateLabel(record.due_at)}</td>
                 <td className="amount-cell">{record.amount_idr === null ? "—" : formatMoney(record.amount_idr)}</td>
                 <td><Status>{record.status}</Status></td>
-                <td>{reminder ? <a className="button button-outline button-small crm-reminder-link" href={reminder} target="_blank" rel="noopener noreferrer"><Send size={13} /> WhatsApp</a> : <span className="table-sub">Add phone</span>}</td>
+                <td><div className="crm-row-actions">
+                  <button className="button button-outline button-small" onClick={() => void downloadPdf(record)}><Download size={13} /> PDF</button>
+                  {reminder ? <a className="button button-outline button-small crm-reminder-link" href={reminder} target="_blank" rel="noopener noreferrer"><Send size={13} /> WhatsApp</a> : <span className="table-sub">Add phone</span>}
+                </div></td>
               </tr>;
             })}
           </tbody></table></div>

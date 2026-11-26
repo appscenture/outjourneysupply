@@ -80,7 +80,7 @@ export default function ClientLoginPage() {
                 setErrorMessage("Account created. Check your email to confirm your account before signing in.");
               }
             } else {
-              const { error } = await supabase.auth.signInWithPassword({
+              const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
                 options: { captchaToken: captchaToken || undefined },
@@ -89,7 +89,13 @@ export default function ClientLoginPage() {
                 setErrorMessage("Email or password is incorrect.");
                 return;
               }
-              router.replace("/client");
+              const adminEmail = process.env.NEXT_PUBLIC_ADMIN_LOGIN_EMAIL;
+              const isAdmin = Boolean(
+                adminEmail &&
+                  data.user?.email &&
+                  data.user.email.toLowerCase() === adminEmail.toLowerCase(),
+              );
+              router.replace(isAdmin ? "/workspace" : "/client");
               router.refresh();
             }
           } catch (error) {

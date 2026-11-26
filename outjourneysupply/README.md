@@ -11,11 +11,11 @@ npm run dev
 
 Open `http://localhost:3000`. To create a production build, run `npm run build`; run it locally with `npm start`.
 
-The `/login` page supports the `admin` username/password and Google OAuth through Supabase Auth. The username maps to the existing Auth account configured by `NEXT_PUBLIC_ADMIN_LOGIN_EMAIL`; its password must be set on that account in Supabase Auth and is never stored in project files. `/workspace` verifies that account's session and redirects other visitors to login. Workspace orders and inventory still use demo records saved in the browser, and the hosted database schema has not been applied.
+The `/login` page supports the `admin` username/password and Google OAuth through Supabase Auth. The username maps to the existing Auth account configured by `NEXT_PUBLIC_ADMIN_LOGIN_EMAIL`; its password must be set on that account in Supabase Auth and is never stored in project files. `/workspace` verifies that account's session and redirects other visitors to login. CRM, inventory, and product management APIs require a server-only Supabase secret key.
 
 ## Supabase development
 
-The versioned migration, fictional seed data, and pgTAP checks are under `supabase/`. The schema is designed for Supabase Auth and Postgres RLS. Browser and server-side session clients use `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; set `NEXT_PUBLIC_ADMIN_LOGIN_EMAIL` to the email of the existing Supabase Auth account used for the `admin` username. The login and workspace guard do not require a Supabase secret key.
+The versioned migrations, fictional seed data, and pgTAP checks are under `supabase/`. The schema is designed for Supabase Auth and Postgres RLS. Browser and server-side session clients use `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; set `NEXT_PUBLIC_ADMIN_LOGIN_EMAIL` to the email of the existing Supabase Auth account used for the `admin` username. The CRM and product management APIs also need `SUPABASE_URL` (or `NEXT_PUBLIC_SUPABASE_URL`) and either `SUPABASE_SECRET_KEY` or `SUPABASE_SERVICE_ROLE_KEY` on the server. Never use a `NEXT_PUBLIC_` prefix for the secret.
 
 For isolated local database development:
 
@@ -25,11 +25,11 @@ For isolated local database development:
 4. Run `npm run supabase:reset` to apply migrations and load fictional seed data.
 5. Run `npm run supabase:test` to execute the database and RLS checks.
 
-`.env.local` is ignored by Git. Never put a secret key in a `NEXT_PUBLIC_` variable or commit credentials. A secret key is unnecessary for the current sign-in flow. The hosted Supabase project has **not** been linked, migrated, or otherwise changed; do not run `supabase link` or `supabase db push` as part of local testing.
+`.env.local` is ignored by Git. Never put a secret key in a `NEXT_PUBLIC_` variable or commit credentials. A secret key is unnecessary for sign-in, but required by admin data APIs. The hosted Supabase project is not changed by local testing; do not run `supabase link` or `supabase db push` without explicit approval.
 
 To enable Google sign-in, configure the Google provider in Supabase Auth with your Google OAuth client ID and secret. Add `http://localhost:3000/auth/callback` to Supabase's allowed redirect URLs, and configure Supabase's callback URL (`https://<project-ref>.supabase.co/auth/v1/callback`) as an authorized redirect URI in Google Cloud. Google must return the same email configured by `NEXT_PUBLIC_ADMIN_LOGIN_EMAIL` to access the admin workspace.
 
-For Vercel or another deployment, set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `NEXT_PUBLIC_ADMIN_LOGIN_EMAIL` in the deployment environment before building. The last value is the existing Auth account email; it is public configuration, not a password or secret.
+For Vercel or another deployment, set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_ADMIN_LOGIN_EMAIL`, and the server-only `SUPABASE_SECRET_KEY` (or `SUPABASE_SERVICE_ROLE_KEY`) in the deployment environment, then redeploy. The admin email is public configuration; the secret key must never be exposed to the browser. The workspace email test also requires server-only `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, and optionally `SMTP_FROM` and `SMTP_SENDER_NAME`. Set SMTP values in the deployment environment, never in the browser or source control. The CRM supports CSV and XLSX import/export and provides printable PDF downloads for customer and document records.
 
 ## Database design
 

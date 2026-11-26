@@ -182,13 +182,9 @@ export default function WorkspaceClient({ userName = "Admin" }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const productFileInputRef = useRef(null);
   const [ready, setReady] = useState(false);
-  const [smtpSettings, setSmtpSettings] = useState({
-    host: "mail.outjourney.id",
-    port: "587",
-    username: "connect@outjourney.id",
-    senderName: "Outjourney",
-    password: "",
-  });
+  const [testEmailTo, setTestEmailTo] = useState("");
+  const [emailTestSending, setEmailTestSending] = useState(false);
+  const [emailTestResult, setEmailTestResult] = useState(null);
   const [emailTemplate, setEmailTemplate] = useState("Your Outjourney document {{document_number}} is ready.\n\nAmount: {{amount}}\nDue date: {{due_date}}\n\nView or download the document: {{document_url}}\n\nOutjourney");
 
   const handleSignOut = async () => {
@@ -247,7 +243,6 @@ export default function WorkspaceClient({ userName = "Admin" }) {
       const saved = window.localStorage.getItem("outjourney-email-settings");
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.smtp) setSmtpSettings((current) => ({ ...current, ...parsed.smtp }));
         if (parsed.template) setEmailTemplate(parsed.template);
       }
     } catch (error) {
@@ -350,13 +345,35 @@ export default function WorkspaceClient({ userName = "Admin" }) {
       setProductSearchSyncing(false);
     }
   };
-  const saveEmailSettings = () => {
+  const saveEmailTemplate = () => {
     try {
-      window.localStorage.setItem("outjourney-email-settings", JSON.stringify({ smtp: { ...smtpSettings, password: "" }, template: emailTemplate }));
-      setToast("Email settings and template saved");
+      window.localStorage.setItem("outjourney-email-settings", JSON.stringify({ template: emailTemplate }));
+      setToast("Email template saved");
     } catch (error) {
-      console.error("Could not save email settings.", error);
-      setToast("Could not save email settings");
+      console.error("Could not save the email template.", error);
+      setToast("Could not save the email template");
+    }
+  };
+  const sendTestEmail = async () => {
+    setEmailTestSending(true);
+    setEmailTestResult(null);
+    try {
+      const response = await fetch("/api/crm/email-test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to: testEmailTo }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not send the test email.");
+      setEmailTestResult({ message: `Test email sent to ${result.to}.`, error: false });
+    } catch (error) {
+      console.error("Could not send the Outjourney test email.", error);
+      setEmailTestResult({
+        message: error instanceof Error ? error.message : "Could not send the test email.",
+        error: true,
+      });
+    } finally {
+      setEmailTestSending(false);
     }
   };
   const addItem = (product) => setCart((current) => ({ ...current, [product.id]: (current[product.id] || 0) + 1 }));
@@ -477,16 +494,13 @@ export default function WorkspaceClient({ userName = "Admin" }) {
                   hidden
                 />
                 <button className="button button-outline" onClick={() => productFileInputRef.current?.click()}>
-                  <Upload size={16} /> Import Excel/CSV
+                  <Upload size={16} /> Import
                 </button>
                 <button className="button button-outline" onClick={handleProductSearchSync} disabled={productSearchSyncing}>
                   <Search size={16} /> {productSearchSyncing ? "Syncing..." : "Sync search"}
                 </button>
-                <button className="button button-outline" onClick={() => void handleProductExport("xlsx")}>
-                  <Download size={16} /> Export XLSX
-                </button>
-                <button className="button button-dark" onClick={() => void handleProductExport("csv")}>
-                  <Download size={16} /> Export CSV
+                <button className="button button-dark" onClick={() => void handleProductExport("xlsx")}>
+                  <Download size={16} /> Export
                 </button>
               </div>}
             />
@@ -494,7 +508,7 @@ export default function WorkspaceClient({ userName = "Admin" }) {
             <section className="content-card page-table-card product-admin-card">
               <div className="card-heading">
                 <div><div className="eyebrow">PRODUCTS</div><h2>{managedProducts.length} items</h2></div>
-                <span className="table-count">CSV columns: SKU, name, category, unit, price_idr</span>
+                <span className="table-count">Excel/CSV fields: SKU, name, category, unit, price_idr</span>
               </div>
               {productDashboardLoading ? <div className="empty-sales">Loading products...</div> : managedProducts.length ? (
                 <div className="table-scroll">
@@ -575,17 +589,18 @@ export default function WorkspaceClient({ userName = "Admin" }) {
           </>}
 
           {activePage === "email" && <>
-            <SectionTitle eyebrow="COMMUNICATIONS" title="Email & notifications" description="Configure SMTP delivery and client document templates." action={<button className="button button-dark" onClick={saveEmailSettings}><Send size={16} /> Save settings</button>} />
+            <SectionTitle eyebrow="COMMUNICATIONS" title="Email & notifications" description="Test server-side email delivery and edit the client document template." action={<button className="button button-dark" onClick={saveEmailTemplate}><FileText size={16} /> Save template</button>} />
             <div className="email-settings-grid">
               <section className="email-settings-card">
                 <div className="email-card-heading"><span className="email-card-icon"><Mail size={18} /></span><div><div className="eyebrow">SMTP</div><h2>Mail server</h2></div></div>
-                <div className="email-form-grid">
-                  <label>Host<input value={smtpSettings.host} onChange={(event) => setSmtpSettings((current) => ({ ...current, host: event.target.value }))} /></label>
-                  <label>Port<input value={smtpSettings.port} onChange={(event) => setSmtpSettings((current) => ({ ...current, port: event.target.value }))} /></label>
-                  <label>Sender email<input type="email" value={smtpSettings.username} onChange={(event) => setSmtpSettings((current) => ({ ...current, username: event.target.value }))} /></label>
-                  <label>Sender name<input value={smtpSettings.senderName} onChange={(event) => setSmtpSettings((current) => ({ ...current, senderName: event.target.value }))} /></label>
-                  <label className="email-password-field">Password<input type="password" value={smtpSettings.password} onChange={(event) => setSmtpSettings((current) => ({ ...current, password: event.target.value }))} placeholder="SMTP password" /></label>
+                <p className="email-server-note">SMTP credentials are read from server-only environment variables and are never stored in this browser.</p>
+                <div className="email-test-row">
+                  <label>Send a test email to<input type="email" autoComplete="email" value={testEmailTo} onChange={(event) => setTestEmailTo(event.target.value)} placeholder="name@example.com" /></label>
+                  <button className="button button-outline" onClick={() => void sendTestEmail()} disabled={emailTestSending || !testEmailTo.trim()}>
+                    <Send size={15} /> {emailTestSending ? "Sending..." : "Send test"}
+                  </button>
                 </div>
+                {emailTestResult && <p className={`email-test-result${emailTestResult.error ? " error" : ""}`} role={emailTestResult.error ? "alert" : "status"}>{emailTestResult.message}</p>}
               </section>
               <section className="email-settings-card">
                 <div className="email-card-heading"><span className="email-card-icon"><FileText size={18} /></span><div><div className="eyebrow">TEMPLATE</div><h2>Client document email</h2></div></div>

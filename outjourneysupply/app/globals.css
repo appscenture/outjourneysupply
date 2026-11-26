@@ -454,7 +454,8 @@ h1, h2, h3, p { margin-top: 0; }
   .sidebar { z-index: 61; width: min(290px, 84vw); padding-top: max(20px, env(safe-area-inset-top)); transform: translateX(-105%); transition: transform .24s ease; box-shadow: none; }
   .sidebar.sidebar-open { transform: translateX(0); box-shadow: 20px 0 60px #10162026; }
   .email-settings-grid { grid-template-columns: 1fr; }
-  .email-form-grid { grid-template-columns: 1fr 82px; }
+  .email-test-row { align-items: stretch; flex-direction: column; }
+  .email-test-row .button { align-self: flex-start; }
   .email-notification-card { align-items: flex-start; gap: 10px; }
   .client-bottom-nav { display: flex; }
   .client-header { height: 60px; padding: 0 16px; }
@@ -602,11 +603,13 @@ h1, h2, h3, p { margin-top: 0; }
 .email-card-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .email-card-heading h2 { margin: 3px 0 0; font-size: 16px; }
 .email-card-icon { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 10px; color: #4e6e98; background: #edf4fd; }
-.email-form-grid { display: grid; grid-template-columns: 1fr 100px; gap: 10px; }
-.email-form-grid label { display: grid; gap: 6px; color: #66758a; font-size: 10px; font-weight: 700; }
-.email-form-grid input { min-height: 40px; padding: 0 10px; border: 1px solid #dde5ef; border-radius: 8px; outline: none; color: #26384f; background: #fff; }
-.email-form-grid input:focus { border-color: #3775cb; box-shadow: 0 0 0 3px #004aad12; }
-.email-password-field { grid-column: 1/-1; }
+.email-server-note { margin: 0 0 14px; color: #7d8999; font-size: 10px; line-height: 1.5; }
+.email-test-row { display: flex; align-items: flex-end; gap: 9px; }
+.email-test-row label { display: grid; min-width: 0; flex: 1; gap: 6px; color: #66758a; font-size: 10px; font-weight: 700; }
+.email-test-row input { min-height: 40px; padding: 0 10px; border: 1px solid #dde5ef; border-radius: 8px; outline: none; color: #26384f; background: #fff; font: inherit; }
+.email-test-row input:focus { border-color: #3775cb; box-shadow: 0 0 0 3px #004aad12; }
+.email-test-result { margin: 10px 0 0; color: #28714b; font-size: 10px; }
+.email-test-result.error { color: #b42332; }
 .email-template { width: 100%; min-height: 142px; resize: vertical; padding: 11px; border: 1px solid #dde5ef; border-radius: 8px; outline: none; color: #26384f; line-height: 1.55; }
 .email-template:focus { border-color: #3775cb; box-shadow: 0 0 0 3px #004aad12; }
 .email-template-vars { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
@@ -763,6 +766,7 @@ h1, h2, h3, p { margin-top: 0; }
 .crm-search input { width: 100%; min-width: 0; border: 0; outline: 0; color: #353a42; background: transparent; font-size: 10px; }
 .crm-number-input { width: 92px; min-height: 34px; padding: 0 8px; border: 1px solid #e2e4e8; border-radius: 6px; color: #353a42; background: #fff; }
 .crm-reminder-link { min-height: 31px; text-decoration: none; }
+.crm-row-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
 .crm-whatsapp-note { margin-top: 12px; }
 .crm-modal { max-height: calc(100vh - 40px); overflow-y: auto; }
 .crm-modal h2 { margin: 4px 0 17px; color: #343a44; font-family: Manrope, sans-serif; font-size: 21px; letter-spacing: -.5px; }
