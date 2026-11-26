@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = extensions, public, auth, app_private;
 
-select plan(10);
+select plan(11);
 
 select ok(
   (select count(*) = 19 from pg_class c join pg_namespace n on n.oid = c.relnamespace
@@ -37,12 +37,18 @@ insert into auth.users (
 )
 values
   ('40000000-0000-4000-8000-000000000001', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'tenant-a@example.test', '', now(), '{}'::jsonb, '{}'::jsonb, now(), now()),
-  ('40000000-0000-4000-8000-000000000002', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'tenant-b@example.test', '', now(), '{}'::jsonb, '{}'::jsonb, now(), now());
+  ('40000000-0000-4000-8000-000000000002', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'tenant-b@example.test', '', now(), '{}'::jsonb, '{}'::jsonb, now(), now()),
+  ('40000000-0000-4000-8000-000000000003', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'catalog-user@example.test', '', now(), '{}'::jsonb, '{}'::jsonb, now(), now());
 
 insert into public.organizations (id, name, slug)
 values
   ('50000000-0000-4000-8000-000000000001', 'Test Kitchen A', 'test-kitchen-a'),
   ('50000000-0000-4000-8000-000000000002', 'Test Kitchen B', 'test-kitchen-b');
+
+insert into public.products (sku, name, category, unit, is_active)
+values
+  ('TEST-CATALOG-ACTIVE-001', 'Active catalog item', 'Frozen', '1 pack', true),
+  ('TEST-CATALOG-INACTIVE-001', 'Inactive catalog item', 'Frozen', '1 pack', false);
 
 insert into public.organization_members (organization_id, user_id, role)
 values
@@ -57,6 +63,13 @@ select is(
   1,
   'an authenticated user only reads their own organization'
 );
+set local request.jwt.claim.sub = '40000000-0000-4000-8000-000000000003';
+select is(
+  (select count(*)::integer from public.products where sku like 'TEST-CATALOG-%'),
+  1,
+  'authenticated users can read active storefront products'
+);
+set local request.jwt.claim.sub = '40000000-0000-4000-8000-000000000001';
 select is(
   (with changed as (
     update public.organizations
