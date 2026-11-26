@@ -3,12 +3,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ArrowRight, Eye, EyeOff, LockKeyhole, Users } from "lucide-react";
 import { getSupabaseClient } from "../../lib/supabase/client";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -67,8 +65,7 @@ export default function LoginPage() {
         return;
       }
 
-      router.replace("/workspace");
-      router.refresh();
+      window.location.replace("https://www.outjourney.id/workspace");
     } catch (error) {
       console.error("Outjourney sign-in failed.", error);
       setErrorMessage("Sign-in is temporarily unavailable. Please try again.");

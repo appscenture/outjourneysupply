@@ -95,8 +95,12 @@ export default function ClientLoginPage() {
                   data.user?.email &&
                   data.user.email.toLowerCase() === adminEmail.toLowerCase(),
               );
-              router.replace(isAdmin ? "/workspace" : "/client");
-              router.refresh();
+              if (isAdmin) {
+                window.location.replace("https://www.outjourney.id/workspace");
+              } else {
+                router.replace("/client");
+                router.refresh();
+              }
             }
           } catch (error) {
             console.error("Outjourney client sign-in failed.", error);
