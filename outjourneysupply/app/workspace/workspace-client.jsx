@@ -76,6 +76,17 @@ const suppliers = [
 ];
 
 const initialStock = Object.fromEntries(products.map((product) => [product.id, product.stock]));
+const emptyManagedProduct = {
+  sku: "",
+  name: "",
+  category: "",
+  description: "",
+  unit: "",
+  image_path: "",
+  price_idr: "",
+  is_active: true,
+  is_featured: false,
+};
 const money = (value) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(value);
 const shortMoney = (value) => value >= 1000000 ? `Rp ${(value / 1000000).toFixed(1).replace(".", ",")} jt` : money(value);
 const daysUntilDelivery = () => {
@@ -172,6 +183,9 @@ export default function WorkspaceClient({ userName = "Admin" }) {
   const [productDashboardLoading, setProductDashboardLoading] = useState(false);
   const [productSearchSyncing, setProductSearchSyncing] = useState(false);
   const [productError, setProductError] = useState("");
+  const [productModalOpen, setProductModalOpen] = useState(false);
+  const [productSaving, setProductSaving] = useState(false);
+  const [productDraft, setProductDraft] = useState(emptyManagedProduct);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All items");
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -272,6 +286,43 @@ export default function WorkspaceClient({ userName = "Admin" }) {
       setProductError(error instanceof Error ? error.message : "Could not load products.");
     } finally {
       setProductDashboardLoading(false);
+    }
+  };
+  const openNewProduct = () => {
+    setProductError("");
+    setProductDraft({ ...emptyManagedProduct });
+    setProductModalOpen(true);
+  };
+  const handleProductCreate = async (event) => {
+    event.preventDefault();
+    setProductSaving(true);
+    setProductError("");
+    const product = {
+      ...productDraft,
+      sku: productDraft.sku.trim(),
+      name: productDraft.name.trim(),
+      category: productDraft.category.trim(),
+      description: productDraft.description.trim(),
+      unit: productDraft.unit.trim(),
+      image_path: productDraft.image_path.trim(),
+      price_idr: Number(productDraft.price_idr),
+    };
+    try {
+      const response = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not add product.");
+      setManagedProducts((current) => [...current, ...result.products].sort((a, b) => a.name.localeCompare(b.name)));
+      setProductModalOpen(false);
+      setToast("Product added to catalog");
+    } catch (error) {
+      console.error("Could not add a product to the catalog.", error);
+      setProductError(error instanceof Error ? error.message : "Could not add product.");
+    } finally {
+      setProductSaving(false);
     }
   };
   const setPage = (page) => {
@@ -484,7 +535,7 @@ export default function WorkspaceClient({ userName = "Admin" }) {
             <SectionTitle
               eyebrow="STOREFRONT"
               title="Product catalog"
-              description="Import and export products for the customer catalog."
+              description="Add, import, and export products for the customer catalog."
               action={<div className="product-admin-actions">
                 <input
                   ref={productFileInputRef}
@@ -498,6 +549,9 @@ export default function WorkspaceClient({ userName = "Admin" }) {
                 </button>
                 <button className="button button-outline" onClick={handleProductSearchSync} disabled={productSearchSyncing}>
                   <Search size={16} /> {productSearchSyncing ? "Syncing..." : "Sync search"}
+                </button>
+                <button className="button button-dark" onClick={openNewProduct}>
+                  <Plus size={16} /> Add product
                 </button>
                 <button className="button button-dark" onClick={() => void handleProductExport("xlsx")}>
                   <Download size={16} /> Export
@@ -526,9 +580,28 @@ export default function WorkspaceClient({ userName = "Admin" }) {
                   </table>
                 </div>
               ) : (
-                <div className="empty-sales">No products found. Import a CSV to add products to the storefront.</div>
+                <div className="empty-sales">No products found. Add one here or import a CSV/XLSX file.</div>
               )}
             </section>
+            {productModalOpen && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setProductModalOpen(false); }}>
+              <section className="tracking-modal crm-modal" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
+                <div className="tracking-modal-head"><div><div className="eyebrow">STOREFRONT PRODUCT</div><h2 id="product-modal-title">Add product</h2></div><button className="icon-button" onClick={() => setProductModalOpen(false)} aria-label="Close form"><X size={19} /></button></div>
+                <form onSubmit={handleProductCreate}>
+                  <div className="crm-form-grid">
+                    <label>SKU<input required maxLength={64} value={productDraft.sku} onChange={(event) => setProductDraft((current) => ({ ...current, sku: event.target.value }))} /></label>
+                    <label>Product name<input required maxLength={160} value={productDraft.name} onChange={(event) => setProductDraft((current) => ({ ...current, name: event.target.value }))} /></label>
+                    <label>Category<input required maxLength={80} value={productDraft.category} onChange={(event) => setProductDraft((current) => ({ ...current, category: event.target.value }))} /></label>
+                    <label>Unit<input required maxLength={80} value={productDraft.unit} onChange={(event) => setProductDraft((current) => ({ ...current, unit: event.target.value }))} placeholder="e.g. 10 pcs / pack" /></label>
+                    <label>Price (IDR)<input required type="number" min="0" step="1" value={productDraft.price_idr} onChange={(event) => setProductDraft((current) => ({ ...current, price_idr: event.target.value }))} /></label>
+                    <label>Image path or URL<input maxLength={1000} value={productDraft.image_path} onChange={(event) => setProductDraft((current) => ({ ...current, image_path: event.target.value }))} placeholder="/img/products/item.webp" /></label>
+                    <label className="crm-form-wide">Description<textarea rows="3" maxLength={4000} value={productDraft.description} onChange={(event) => setProductDraft((current) => ({ ...current, description: event.target.value }))} /></label>
+                    <label className="crm-form-checkbox"><input type="checkbox" checked={productDraft.is_active} onChange={(event) => setProductDraft((current) => ({ ...current, is_active: event.target.checked }))} /> Active on storefront</label>
+                    <label className="crm-form-checkbox"><input type="checkbox" checked={productDraft.is_featured} onChange={(event) => setProductDraft((current) => ({ ...current, is_featured: event.target.checked }))} /> Featured product</label>
+                  </div>
+                  <div className="crm-form-footer"><button type="button" className="button button-outline" onClick={() => setProductModalOpen(false)}>Cancel</button><button type="submit" className="button button-dark" disabled={productSaving}>{productSaving ? "Saving..." : "Save product"}</button></div>
+                </form>
+              </section>
+            </div>}
           </>}
 
           {activePage === "catalog" && (

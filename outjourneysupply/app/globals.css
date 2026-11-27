@@ -779,6 +779,8 @@ h1, h2, h3, p { margin-top: 0; }
 .crm-form-grid textarea { resize: vertical; }
 .crm-form-grid input:focus, .crm-form-grid select:focus, .crm-form-grid textarea:focus { border-color: #3775cb; box-shadow: 0 0 0 3px #004aad12; }
 .crm-form-wide { grid-column: 1 / -1; }
+.crm-form-checkbox { display: flex !important; align-items: center; gap: 8px !important; }
+.crm-form-checkbox input { width: 16px; min-height: 16px; margin: 0; }
 .crm-form-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 17px; padding-top: 14px; border-top: 1px solid #edeef0; }
 
 @media (max-width: 680px) {

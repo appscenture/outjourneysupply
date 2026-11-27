@@ -89,13 +89,15 @@ export async function POST(request) {
     throw error;
   }
 
-  if (!Array.isArray(body?.products) || body.products.length === 0 || body.products.length > 1000) {
+  const isSingleProduct = Object.prototype.hasOwnProperty.call(body ?? {}, "product");
+  const incomingProducts = isSingleProduct ? [body.product] : body?.products;
+  if (!Array.isArray(incomingProducts) || incomingProducts.length === 0 || incomingProducts.length > 1000) {
     return NextResponse.json({ error: "Import between 1 and 1,000 products at a time." }, { status: 400 });
   }
 
   const products = [];
   const seenSkus = new Set();
-  for (const [index, product] of body.products.entries()) {
+  for (const [index, product] of incomingProducts.entries()) {
     const rowNumber = index + 1;
     if (!product || typeof product !== "object" || Array.isArray(product)) {
       return NextResponse.json({ error: `Product row ${rowNumber} is invalid.` }, { status: 400 });
@@ -140,14 +142,21 @@ export async function POST(request) {
     });
   }
 
-  const { data, error } = await access.client
-    .from("products")
-    .upsert(products, { onConflict: "sku" })
-    .select(productSelection);
+  const query = isSingleProduct
+    ? access.client.from("products").insert(products)
+    : access.client.from("products").upsert(products, { onConflict: "sku" });
+  const { data, error } = await query.select(productSelection);
 
   if (error) {
     console.error("Could not import the product catalog.", error);
-    return NextResponse.json({ error: "Could not import products. Check the CSV values and try again." }, { status: 500 });
+    if (isSingleProduct && error.code === "23505") {
+      return NextResponse.json({ error: "A product with this SKU already exists." }, { status: 409 });
+    }
+    return NextResponse.json({
+      error: isSingleProduct
+        ? "Could not add product. Check the product details and try again."
+        : "Could not import products. Check the CSV values and try again.",
+    }, { status: 500 });
   }
 
   const config = getAlgoliaAdminConfig();
