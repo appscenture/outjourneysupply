@@ -172,6 +172,14 @@ export async function POST(request) {
       searchIndexed = true;
     } catch (error) {
       console.error("Products were saved but could not be synced to Algolia.", error);
+      if (isSingleProduct) {
+        return NextResponse.json({
+          imported: data.length,
+          products: data,
+          searchIndexed: false,
+          warning: "Product was saved, but could not be synced to Algolia.",
+        }, { status: 201 });
+      }
       return NextResponse.json({
         error: "Products were saved to Supabase, but Algolia could not be updated. Retry the import after checking Algolia configuration.",
         imported: data.length,

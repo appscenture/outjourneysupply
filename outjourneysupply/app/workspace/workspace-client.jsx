@@ -317,7 +317,7 @@ export default function WorkspaceClient({ userName = "Admin" }) {
       if (!response.ok) throw new Error(result.error || "Could not add product.");
       setManagedProducts((current) => [...current, ...result.products].sort((a, b) => a.name.localeCompare(b.name)));
       setProductModalOpen(false);
-      setToast("Product added to catalog");
+      setToast(result.warning || "Product added to catalog");
     } catch (error) {
       console.error("Could not add a product to the catalog.", error);
       setProductError(error instanceof Error ? error.message : "Could not add product.");
